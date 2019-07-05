@@ -8,8 +8,8 @@ const Schema = mongoose.Schema;
 mongoose.connect('mongodb://localhost:27017/mediaDB');
 
 
-let noOfMediaToRead = 100000;
-let mediaBufferSize = 25000;
+let noOfMediaToRead = 30000000;
+let mediaBufferSize = 30000;
 let mediaBuffer = []; // buffer used to insert data in big batches
 
 // create media schema
@@ -19,6 +19,9 @@ let mediaSchema = new Schema({
   mediaType: {type: String, required: true},
   year: {type: String, required: true}
 });
+
+
+
 // create mongoose model
 const MediaEntry = mongoose.model('MediaEntry', mediaSchema);
 
@@ -31,6 +34,31 @@ let rl = readline.createInterface({
   input: fs.createReadStream('checkouts-by-title.csv')
   //input: fs.createReadStream('test.txt')
 });
+
+
+// TO DO: read only first line of the file
+rl.on('line', function (line) {
+
+  let firstLineRead = false;
+
+  //split lines by commas
+  let arr = line.split(',');
+
+  // Define line limit (to be stored in the DB)
+  if (firstLineRead === false) {
+    firstLineRead = true;
+
+    //construct an object from each element in the array
+    arr.forEach((el,index) => {
+      obj[el] = 0;
+    })
+
+  } else { 
+    // STOP READING
+    rl.close();
+  }
+});
+
 
 
 // event is emitted after each line
@@ -89,5 +117,7 @@ rl.on('close',
 
     // Total lines count
     console.log(`processed lines:  ${line_no}`);
+
+    console.log(obj);
   }
 );

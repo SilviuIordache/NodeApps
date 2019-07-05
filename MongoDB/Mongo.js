@@ -7,28 +7,26 @@ const mdbclient = require('mongodb').MongoClient;
 // connect to the local db
 const url = 'mongodb://localhost:27017/';
 const config = require('./config.js');
+const filePath = '../testFiles/checkouts-by-title.csv';
 
 // local variables
 let rl;
 const t0 = new Date().getTime();
 let line_no = 0;
-const noOfMediaToRead = 31000007;
+const noOfMediaToRead = 250007;
 const chunkSize = 25000;
+let chunksTotal = Math.ceil(noOfMediaToRead/chunkSize);
 let chunkNo = 0;
 let mediaFields = [];
 let mediaObj = {};
 let mediaBuffer = [];
 
 function parseLine(line) {
-	// feedback logs
-	// if (line_no % 10000 == 0 && line_no !== 0) 
-	// 	console.log(`${line_no} lines processed`);
-
 	//split csv lines by commas
 	let arr = line.split(',');
 
 	// define line limit (to be stored in the DB)
-	//if (line_no <= noOfMediaToRead) {
+	if (line_no <= noOfMediaToRead) {
 
 		// grabbing field names from the first line in the csv
 		if (line_no === 0) {
@@ -42,7 +40,7 @@ function parseLine(line) {
 			// add object to the buffer
 			mediaBuffer.push(mediaObj);
 
-			// clear object
+			// clear media object
 			mediaObj = {};
 
 			// If buffer reached the chunkSize, pause to insert it to the DB
@@ -50,49 +48,72 @@ function parseLine(line) {
 				rl.pause();
 			}
 		}
-	//} else {
-		//rl.close();
-	//}
+	} else if (mediaBuffer > 0){
+		rl.pause();
+	} else {
+		rl.close();
+	}
 
 	line_no++;
 }
 
 function endActions(col, conn) {
-	// add remaining 
-	if (mediaBuffer.length > 0) {
-		col.insertMany(mediaBuffer, (err, res) => {
-			if (err) {
-				console.error(err);
-			}
-			console.log(`added last ${mediaBuffer.length} lines`);
-			console.log(`added chunk: ${chunkNo}`);
 
-			let t2 = new Date().getTime();
-			console.log('Stopped reading from file');
-			console.log(`PROCESS DURATION: ${(t2-t0) / 1000} s `);
-			console.log(`processed lines:  ${line_no}`);
+	console.log(mediaBuffer.length);
+
+	// add remaining chunk, if any
+	if (mediaBuffer.length > 0) {
+		//console.log('echo');
+		insertChunk(col, buff);
+
+		// col.insertMany(mediaBuffer, (err, res) => {
+		// 	if (err) {
+		// 		console.error(err);
+		// 	}
+		// 	console.log(`chunk: ${chunkNo} / ${chunksTotal}`);
+
+		// 	//end server connection
+		// 	conn.close();
 
 			
-			//end server connection
-			conn.close();
-		});
+		// });
 	} else {
 		//end server connection
 		conn.close();
+		
+		showEndOfProcStats();
 	}
-	
+}
+
+function showEndOfProcStats() {
+	let t2 = new Date().getTime();
+	console.log('Stopped reading from file');
+	console.log(`PROCESS DURATION: ${(t2-t0) / 1000} s `);
+}
+
+// col = targetCollection, buff = targetBuffer
+function insertChunk(col, buff) {
+	col.insertMany(buff, (err, res) => {
+		if (err) {
+			console.error(err);
+		}
+		console.log(`chunk:${chunkNo}/${chunksTotal}`);
+		chunkNo++;
+	});
 }
 
 function addChunk(collection) {
 	// insert datapoints in collection
-	collection.insertMany(mediaBuffer, (err, res) => {
-		if (err) {
-			console.error(err);
-		}
-		console.log(`added chunk: ${chunkNo}`);
-		chunkNo++;
-	});
+	// collection.insertMany(mediaBuffer, (err, res) => {
+	// 	if (err) {
+	// 		console.error(err);
+	// 	}
+	// 	console.log(`chunk: ${chunkNo} / ${chunksTotal}`);
+	// 	chunkNo++;
+	// });
 
+	insertChunk(collection, mediaBuffer);
+	
 	// reset buffer
 	mediaBuffer = [];
 
@@ -114,12 +135,17 @@ mdbclient.connect(url, (err, conn) => {
 				conn.close();
 				return console.error(err);
 			}
-			console.log(`\n Created a collection named ${config.collection}` + ` in database ${config.db}`);
+			
+			console.log('\n');
+			console.log(`Created a collection named "${config.collection}"` + ` in database "${config.db}"`);
 
+			console.log(`Lines to read: ${noOfMediaToRead}`);
+			console.log(`Chunk size: ${chunkSize} lines/chunk`);
+			console.log(`Chunks to read: ${chunksTotal}`);
 
 			// read stream for reading file
 			rl = readline.createInterface({
-				input: fs.createReadStream('checkouts-by-title.csv')
+				input: fs.createReadStream(filePath)
 				//input: fs.createReadStream('test.csv')
 			});
 

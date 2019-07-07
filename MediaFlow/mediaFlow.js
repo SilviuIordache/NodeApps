@@ -1,9 +1,7 @@
 const readline = require('readline');
 const fs = require('fs');
-
 // import the mongo client
 const mdbclient = require('mongodb').MongoClient;
-
 
 
 // connect to the local db
@@ -15,7 +13,7 @@ const filePath = '../testFiles/checkouts-by-title.csv';
 let rl;
 const t0 = new Date().getTime();
 let line_no = 0;
-const noOfMediaToRead = 250010;
+const noOfMediaToRead = 250000;
 const chunkSize = 25000;
 let chunksTotal = Math.ceil(noOfMediaToRead/chunkSize);
 let chunkNo = 0;
@@ -43,14 +41,15 @@ function parseLine(line) {
 			// clear media object
 			mediaObj = {};
 			// if buffer reached the chunkSize, pause to insert it to the DB
-			if (mediaBuffer.length % chunkSize == 0) {
+			if (mediaBuffer.length % chunkSize === 0) {
 				rl.pause();
 			}
 		}
   } else if (mediaBuffer.length > 0){
-	  rl.pause();
+    console.log('echo');
+	  rl.pause(); // calls insertChunk ()
   } else {
-		rl.close();
+		rl.close(); // calls endActions()
 	}
 
 	line_no++;
@@ -65,7 +64,6 @@ function endActions(col, conn) {
 	} else {
 		//end server connection
     conn.close();
-
     showEndOfProcStats();
 	}
 }
@@ -79,19 +77,20 @@ function showEndOfProcStats() {
 // col = targetCollection, buff = targetBuffer
 function insertChunk(col) {
 
+  console.log(`chunk:${chunkNo}; size:${mediaBuffer.length}`);
+  
   if (mediaBuffer.length > 0) {
     col.insertMany(mediaBuffer, (err, res) => {
       if (err) {
         console.error(err);
       }
       chunkNo++;
-      console.log(`chunk:${chunkNo}; size:${mediaBuffer.length}`);
-
+      
+      // reset buffer
+      mediaBuffer = [];
+      
       // resume reading from file
       rl.resume();
-  
-      // reset buffer
-	    mediaBuffer = [];
     });
   }
 }

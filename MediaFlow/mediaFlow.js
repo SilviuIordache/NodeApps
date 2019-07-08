@@ -13,7 +13,7 @@ const filePath = '../testFiles/checkouts-by-title.csv';
 let rl;
 const t0 = new Date().getTime();
 let line_no = 0;
-const noOfMediaToRead = 250000;
+const noOfMediaToRead = 250003;
 const chunkSize = 25000;
 let chunksTotal = Math.ceil(noOfMediaToRead/chunkSize);
 let chunkNo = 0;
@@ -46,7 +46,6 @@ function parseLine(line) {
 			}
 		}
   } else if (mediaBuffer.length > 0){
-    console.log('echo');
 	  rl.pause(); // calls insertChunk ()
   } else {
 		rl.close(); // calls endActions()
@@ -74,7 +73,7 @@ function showEndOfProcStats() {
 	console.log(`PROCESS DURATION: ${(t2-t0) / 1000} s `);
 }
 
-// col = targetCollection, buff = targetBuffer
+// col = targetCollection
 function insertChunk(col) {
 
   console.log(`chunk:${chunkNo}; size:${mediaBuffer.length}`);

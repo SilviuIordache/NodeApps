@@ -13,8 +13,8 @@ const filePath = '../testFiles/checkouts-by-title.csv';
 let rl;
 const t0 = new Date().getTime();
 let line_no = 0;
-const noOfMediaToRead = 250003;
-const chunkSize = 25000;
+const noOfMediaToRead = 40000000;
+const chunkSize = 35000;
 let chunksTotal = Math.ceil(noOfMediaToRead/chunkSize);
 let chunkNo = 0;
 let mediaFields = [];
@@ -45,8 +45,6 @@ function parseLine(line) {
 				rl.pause();
 			}
 		}
-  } else if (mediaBuffer.length > 0){
-	  rl.pause(); // calls insertChunk ()
   } else {
 		rl.close(); // calls endActions()
 	}
@@ -59,7 +57,10 @@ function endActions(col, conn) {
 	// add remaining chunk, if any
 	if (mediaBuffer.length > 0) {
     console.log('echo');
-		insertChunk(col, mediaBuffer);
+		insertChunk(col, () => {
+			conn.close();
+    	showEndOfProcStats();
+		});
 	} else {
 		//end server connection
     conn.close();
@@ -74,22 +75,14 @@ function showEndOfProcStats() {
 }
 
 // col = targetCollection
-function insertChunk(col) {
-
-  console.log(`chunk:${chunkNo}; size:${mediaBuffer.length}`);
-  
+function insertChunk(col, done) {
   if (mediaBuffer.length > 0) {
+		console.log(`chunk:${++chunkNo}; size:${mediaBuffer.length}`);
     col.insertMany(mediaBuffer, (err, res) => {
       if (err) {
         console.error(err);
       }
-      chunkNo++;
-      
-      // reset buffer
-      mediaBuffer = [];
-      
-      // resume reading from file
-      rl.resume();
+			done();
     });
   }
 }
@@ -128,7 +121,15 @@ mdbclient.connect(url, { useNewUrlParser: true }, (err, conn) => {
 			// event: read stream closed
 			rl.on('close', () => endActions(col, conn));
 			// event: read stream paused
-      rl.on('pause', () => insertChunk(col));
+      rl.on('pause', () => {
+				insertChunk(col, () => {});
+
+				//reset mediaBuffer
+				mediaBuffer = [];
+		
+				// resume reading from file
+				rl.resume();
+			});
       //------------------------------------------------
 		}
 	);

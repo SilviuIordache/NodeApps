@@ -7,8 +7,8 @@ const mediaRoutes = require('./media');
 var mainRouter = new Router();
 
 // mounting the routes on their specific endpoints
-mainRouter.use('/author', authorRoutes);
-mainRouter.use('/book', bookRoutes);
-mainRouter.use('/media', mediaRoutes);
+mainRouter.use('/', authorRoutes);
+mainRouter.use('/', bookRoutes);
+mainRouter.use('/', mediaRoutes);
 
 module.exports = mainRouter;

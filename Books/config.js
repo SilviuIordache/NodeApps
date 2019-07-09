@@ -1,4 +1,5 @@
 module.exports = {
   'db': 'mediaDB',
-  'collection': 'mediaCollection'
+  'collection': 'mediaCollection',
+  'itemsPerPage' : 10
 };

@@ -4,14 +4,17 @@ const config = require('../../config.js');
 
 const mediaSchema = new Schema(
   {
-  usageClass: {type: String},
-  checkoutType: {type: String},
-  materialType: {type: String},
-  checkoutYear: {type: String},
-  checkoutMonth: {type: String},
-  checkouts: {type: String},
-  title: {type: String},
-  creator: {type: String}
+    UsageClass: String,
+    CheckoutType: String,
+    MaterialType: String,
+    CheckoutYear: String,
+    CheckoutMonth: String,
+    Checkouts: String,
+    Title: String,
+    Creator: String,
+    Subjects: String,
+    Publisher: String,
+    PublicationYear: String,
 },
 { collection: `${config.collection}`})
 

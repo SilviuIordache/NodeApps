@@ -3,7 +3,7 @@ const bp = require('body-parser');
 const mongoose = require('mongoose');
 mongoose.set('useFindAndModify', false);
 
-const portNo = 3002;
+const portNo = 3000;
 
 // import config with media and collection name
 const config = require('./config.js');

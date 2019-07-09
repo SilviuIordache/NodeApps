@@ -2,11 +2,10 @@ const Router = require('express').Router;
 const MediaController = require('../controllers/media');
 let mediaModel = require('../model/media');
 var mediaRoutes = new Router();
-const config = require('../../config.js');
 
 
 // injecting the media model in the controller instance
-const mediaControllerIns = new MediaController(mediaModel);
+const mediaController = new MediaController(mediaModel);
 
 // mediaRoutes.get('/', (req, res) => {
 //   mediaControllerIns.getMedias((err, docs) => {
@@ -19,9 +18,9 @@ const mediaControllerIns = new MediaController(mediaModel);
 // })
 
 // show first 6 media files
-mediaRoutes.get('/media', (req, res) => {
+mediaRoutes.get('/test', (req, res) => {
   //console.log(req.params['id']);
-  mediaControllerIns.getSomeMedia((err, result) => {
+  mediaController.getSomeMedia((err, result) => {
     if (err) {
       console.log(err);
       return res.status(500).end();
@@ -30,11 +29,10 @@ mediaRoutes.get('/media', (req, res) => {
   })
 })
 
-
-// to do: show by id
-mediaRoutes.get('/media/:id', (req, res) => {
+// show by id
+mediaRoutes.get('/:id', (req, res) => {
   //console.log(`Got this: ${req.params['id']}. type: ${typeof req.params['id']}`);
-  mediaControllerIns.getMediaById(
+  mediaController.getMediaById(
     req.params['id'],
     (err, result) => {
       if (err) {
@@ -46,26 +44,43 @@ mediaRoutes.get('/media/:id', (req, res) => {
   )
 })
 
+// show by field
+mediaRoutes.get('/search/:field', (req, res) => {
+  let field = req.params['field'];
 
-// to do: show by pages (use skip, 1-20, 21-40, etc.)
-mediaRoutes.get('/media/pages/:page', (req, res) => {
-  config.itemsPerPage,
-  req.params['page'],
-  mediaControllerIns.getMedia(
+
+  mediaController.getByField(field, function(err, result){
+    if(err) return res.status(500).send(JSON.stringify(err));
+    return res.status(200).send(result);
+  })
+})
+
+//show by pages
+mediaRoutes.get('/pages/:page', (req, res) => {
+  mediaController.getMedia(
+    req.params['page'],
     (err, result) => {
       if (err) {
         console.log(err);
         return res.status(500).end();
       }
       res.json(result);
-    }
-  )
+    });
 })
 
+// adding an item
+mediaRoutes.post('/', (req, res) => {
+  let item = req.body;
 
-//to do:  Delete
+  mediaController.createMedia(item, function(err, result){
+    if(err) return res.status(500).send(JSON.stringify(err));
+    res.status(201).send(result);
+  })
+})
 
-//to do:  modify
+// to do:  Delete
+
+// to do:  modify
 
 
 module.exports = mediaRoutes;

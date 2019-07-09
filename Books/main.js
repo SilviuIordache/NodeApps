@@ -11,6 +11,13 @@ const config = require('./config.js');
 mongoose.connect(`mongodb://localhost:27017/${config.db}`, { useNewUrlParser: true });
 mongoose.set('debug', true);
 
+// establish db connection
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function () {
+  console.log(`DB connection established: ${config.db}`);
+});
+
 // import routes
 const routes = require('./src/routes/main');
 
@@ -18,12 +25,17 @@ const routes = require('./src/routes/main');
 var app = express();
 
 // load json parser
+app.use(bp.urlencoded({ extended: false }))
 app.use(bp.json());
 
 // load routes
-app.use(routes);
+app.use('/',routes);
+
 
 app.listen(portNo, () => {
   console.log(`listening on port ${portNo}`);
 });
+
+
+
 

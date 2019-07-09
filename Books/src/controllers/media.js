@@ -3,12 +3,17 @@ class MediaController{
     this.medias = mediaModel;
   }
 
+  getOneItem(done) {
+    this.medias.find({}, (err, res) => {
+      if (err) return console.log(err);
+      return done(null, res);
+    }).limit(5);
+  };
+
   getMedias(done) {
     this.medias.find({}, () => {
       if (err) return done(err);
-    }).limit(10);
-
-
+    })
   }
 
   addMedia(media, done) {

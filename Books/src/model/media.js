@@ -11,7 +11,7 @@ const mediaSchema = new Schema({
   checkouts: {type: String},
   title: {type: String},
   creator: {type: String}
-})
+},{ collection: `${config.collection}`})
 
 // create media model
 const Media = mongoose.model(config.collection, mediaSchema);

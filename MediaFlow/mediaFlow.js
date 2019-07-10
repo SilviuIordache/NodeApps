@@ -13,8 +13,8 @@ const filePath = '../testFiles/checkouts-by-title.csv';
 let rl;
 const t0 = new Date().getTime();
 let line_no = 0;
-const noOfMediaToRead = 10145;
-const chunkSize = 2000;
+const noOfMediaToRead = 50;
+const chunkSize = 10;
 let chunksTotal = Math.ceil(noOfMediaToRead/chunkSize);
 let chunkNo = 0;
 let mediaFields = [];
@@ -23,14 +23,22 @@ let mediaBuffer = [];
 
 function parseLine(line) {
 	//split csv lines by commas
-	let arr = line.split(',');
 
+	let fixedLine = line.replace(/,,/g,',');
+
+	let arr = fixedLine.split(',');
+
+	
+	
 	// define line limit (to be stored in the DB)
 	if (line_no <= noOfMediaToRead) {
 		// grabbing field names from the first line in the csv
 		if (line_no === 0) {
 			// using rest parameter in order to pass the values from arr by value
 			mediaFields = [...arr];
+			console.log(`mediaFields: ${mediaFields}`);
+		} else if (line_no === 1) {
+			console.log(`2nd line: ${arr} `);
 		} else {
 			// construct objects: key = mediaFields ; values = arr[i] 
 			for (let i in arr) {

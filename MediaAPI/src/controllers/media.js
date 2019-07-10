@@ -1,53 +1,90 @@
 class MediaController {
   constructor(mediaModel) {
-    this.medias = mediaModel;
+    this.mediaItems = mediaModel;
     this.itemsPerPage = 3;
   }
 
-  // getting first 5 items
+  // getting first 5 items (done)
   getSomeMedia(done) {
-    this.medias.find({}, (err, res) => {
+    this.mediaItems.find({}, (err, res) => {
       if (err) return console.log(err);
       return done(null, res);
     }).limit(5);
   };
 
-  // getting item by id
+  // getting item by id (done)
   getMediaById(id, done) {
-    this.medias.findById(id, (err, res) => {
+    this.mediaItems.findById(id, (err, res) => {
       if (err) return console.log(err);
       return done(null, res);
     })
   };
 
-  // getting item by field
-  getMediaByField(field, done) {
-    this.medias
-    .find({ [field]: `${value}`}, 
-    (err, res) => {
-      if (err) return done(err);
-      return done(null, res)
-    })
-    .skip(this.limit * page)
-    .limit(this.limit)
+  // getting item by field (done)
+  getMediaByField(page, field, done) {
+    this.mediaItems
+      .find({ $text: { $search: field }
+        },
+        (err, res) => {
+          if (err) return done(err);
+          return done(null, res)
+        })
+      .skip(this.itemsPerPage * page)
+      .limit(this.itemsPerPage)
   }
 
+  // getting item by publisher
+  getMediaByPublisher(page, publisher, done) {
+    this.mediaItems
+    .find({Publisher: publisher},
+      (err, res) => {
+        if (err) return done(err);
+        return done(null, res)
+      })
+    .skip(this.itemsPerPage * page)
+    .limit(this.itemsPerPage)
+  }
 
-  // pagination function
-  getMedia(page, done) {
-    this.medias.find({}, (err, res) => {
+  // pagination function (done)
+  getMediaByPage(page, done) {
+    this.mediaItems
+    .find({}, (err, res) => {
       if (err) return console.log(err);
       return done(null, res);
-    }).skip(page * this.itemsPerPage).limit(this.itemsPerPage);
+    })
+    .skip(page * this.itemsPerPage)
+    .limit(this.itemsPerPage);
   };
 
-  // adding an item
+  // adding an item (done)
   createMedia(media, done) {
-    console.log('creating new item');
-    new this.medias(media).save(function (err) {
+    console.log('creating new media item');
+    new this.mediaItems(media).save(function (err) {
       if (err) return done(err);
       return done(null, 'Item created!');
-    })
+    });
+  }
+
+  // deleting an item (done)
+  deleteMediaById(id, done) {
+    console.log('deleting media item');
+    this.mediaItems.findOneAndDelete(
+      { _id: id },
+      (err, res) => {
+        if (err) return console.log(err);
+        return done(null, res);
+      });
+  }
+  
+  // modify item (done)
+  editMediaItem(id, newValues, done) {
+    console.log('editing media item');
+    this.mediaItems.findOneAndUpdate( 
+      { _id: id },
+      newValues,
+      { upsert: true, new: true, lean: true },
+      done
+    );
   }
 
 }

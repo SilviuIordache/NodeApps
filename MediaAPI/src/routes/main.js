@@ -1,9 +1,11 @@
 const Router = require('express').Router;
 const mediaRoutes = require('./media');
+const publisherRoutes = require('./publisher');
 
 var mainRouter = new Router();
 
 // mounting the routes on their specific endpoints
-mainRouter.use('/', mediaRoutes);
+mainRouter.use('/media', mediaRoutes);
+mainRouter.use('/publisher', publisherRoutes);
 
 module.exports = mainRouter;

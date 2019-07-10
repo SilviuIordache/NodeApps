@@ -7,17 +7,8 @@ var mediaRoutes = new Router();
 // injecting the media model in the controller instance
 const mediaController = new MediaController(mediaModel);
 
-// mediaRoutes.get('/', (req, res) => {
-//   mediaControllerIns.getMedias((err, docs) => {
-//     if (err) {
-//       console.error(err);
-//       return res.status(500).end();
-//     }
-//     res.json(docs);
-//   })
-// })
 
-// show first 6 media files
+// show first 6 media files (done)
 mediaRoutes.get('/test', (req, res) => {
   //console.log(req.params['id']);
   mediaController.getSomeMedia((err, result) => {
@@ -29,7 +20,35 @@ mediaRoutes.get('/test', (req, res) => {
   })
 })
 
-// show by id
+// show by field (done) ex: // http://localhost:3000/media/search?field=Dragnea&page=0
+mediaRoutes.get('/search', (req, res) => {
+  let field = req.query['field'];
+  let page = req.query['page'];
+
+  if (page === undefined) page = 0;
+  mediaController.getMediaByField(page, field, (err, result) => {
+    if(err) return res.status(500).send(JSON.stringify(err));
+    res.json(result);
+  })
+})
+
+//show by pages (done) TO DO : query params
+mediaRoutes.get('/', (req, res) => {
+
+  const page = req.query['page'];
+
+  mediaController.getMediaByPage(
+    page,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).end();
+      }
+      res.json(result);
+    });
+})
+
+// show by id (done)
 mediaRoutes.get('/:id', (req, res) => {
   //console.log(`Got this: ${req.params['id']}. type: ${typeof req.params['id']}`);
   mediaController.getMediaById(
@@ -44,43 +63,49 @@ mediaRoutes.get('/:id', (req, res) => {
   )
 })
 
-// show by field
-mediaRoutes.get('/search/:field', (req, res) => {
-  let field = req.params['field'];
-
-
-  mediaController.getByField(field, function(err, result){
-    if(err) return res.status(500).send(JSON.stringify(err));
-    return res.status(200).send(result);
-  })
-})
-
-//show by pages
-mediaRoutes.get('/pages/:page', (req, res) => {
-  mediaController.getMedia(
-    req.params['page'],
-    (err, result) => {
-      if (err) {
-        console.log(err);
-        return res.status(500).end();
-      }
-      res.json(result);
-    });
-})
-
-// adding an item
+// adding an item (done)
 mediaRoutes.post('/', (req, res) => {
   let item = req.body;
 
-  mediaController.createMedia(item, function(err, result){
-    if(err) return res.status(500).send(JSON.stringify(err));
+  mediaController.createMedia(item, (err, result) => {
+    if (err) return res.status(500).send(JSON.stringify(err));
     res.status(201).send(result);
   })
 })
 
-// to do:  Delete
+// delete request (done)
+mediaRoutes.delete('/:id', (req, res) => {
+  let id = req.params['id'];
 
-// to do:  modify
+  mediaController.deleteMediaById(id, (err, result) => {
+    if (err) return res.status(500).send(JSON.stringify(err));
+    res.status(204).send(result);
+  })
+  
+})
+
+// edit request (done?)
+mediaRoutes.put('/', (req, res) => {
+  let id = req.query['id'];
+  let newValues = req.body;
+
+  mediaController.editMediaItem(id, newValues, (err, result) => {
+    if (err) return res.status(500).send(JSON.stringify(err));
+    res.json(result);
+  });
+})
+
+// query by publisher
+mediaRoutes.get('/', (req, res) => {
+  let publisher = req.query['publisher'];
+  let page = req.query['page'];
+
+  mediaController.getMediaByPublisher(page, publisher, (err, result) => {
+    if(err) return res.status(500).send(JSON.stringify(err));
+    //res.json(result);
+    res.status(200).send(result);
+  })
+})
 
 
 module.exports = mediaRoutes;

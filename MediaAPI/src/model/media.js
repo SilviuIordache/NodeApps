@@ -2,8 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const config = require('../../config.js');
 
-const mediaSchema = new Schema(
-  {
+const mediaSchema = new Schema({
     UsageClass: String,
     CheckoutType: String,
     MaterialType: String,
@@ -19,6 +18,7 @@ const mediaSchema = new Schema(
 { collection: `${config.collection}`})
 
 
+mediaSchema.index({'$**': 'text'});
 
 // create media model
 const Media = mongoose.model(config.collection, mediaSchema);

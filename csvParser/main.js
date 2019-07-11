@@ -4,8 +4,8 @@ const mdbclient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017/';
 const config = require('../MediaFlow/config');
 
-const chunk = 100;
-const limit = 10000000;
+const chunk = 10;
+const limit = 10;
 let curr = 0;
 let results = [];
 // connect to the server
@@ -32,15 +32,20 @@ mdbclient.connect(url, {
             stream.end();
             return
           }
+
+          // trim extra characters
+          data['CheckoutYear'] = data['CheckoutYear'].replace(/\D/g, '');
+          data['PublicationYear'] = data['PublicationYear'].replace(/\D/g, '');
+
           results.push(data)
           curr++;
+
           if (curr % chunk === 0) {
-            if (results)
+            if (results) {
               col.insertMany([...results], (err, res) => {
-                if (err) {
-                  console.error(err);
-                }
+                if (err) console.error(err);
               });
+            }
             results = [];
           }
           

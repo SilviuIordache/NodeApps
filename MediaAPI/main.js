@@ -1,6 +1,7 @@
 const express = require('express');
 const bp = require('body-parser');
 const mongoose = require('mongoose');
+var cors = require('cors')
 mongoose.set('useFindAndModify', false);
 
 const portNo = 3000;
@@ -24,10 +25,13 @@ db.once('open', function () {
 });
 
 // import routes
-const routes = require('./src/routes/main');
+const routes = require('./src/server/routes/main');
 
 // create express object
 var app = express();
+
+// use cors
+app.use(cors());
 
 // load json parser
 app.use(bp.urlencoded({
@@ -35,8 +39,10 @@ app.use(bp.urlencoded({
 }))
 app.use(bp.json());
 
+
 // load routes
 app.use('/', routes);
+
 
 
 app.listen(portNo, () => {

@@ -7,61 +7,75 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <!-- development version, includes helpful console warnings -->
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <title>Document</title>
 </head>
 
 <body>
 
+
   <div id="app">
-    <h1>{{ buttonData }}</h1>
-    <p>{{ email }}</p>
-    <p>{{ password }}</p>
-    <input type="email" v-model="email">
-    <input type="password" v-model="password">
-    <button @click="login()">Log in</button>
-    <a href="#" v-on:click.prevent="myMethod()"></a>
-    <my-button title="button 1"></my-button>
-    <my-button title="button 2"></my-button>
-    <my-button title="button 3"></my-button>
-    <my-button title="button 4"></my-button>
+    <!-- <div v-for="item in media">
+        <p> {{ item }} </p>
+    </div> -->
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th v-for="item in headers">
+            {{ item }}
+          </th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in media">
+          <td v-for="colName in headers">
+            <div v-if="item[colName]">
+              {{item[colName]}}
+            </div>
+            <div v-else>
+              N/A
+            </div>
+
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+
   </div>
 
   <script>
-    Vue.component('my-button', {
-        data: function () {
-          return {
-            count: 0
-          }
-        },
-        props: {
-          title: ''
-        },
-        template: '<button @click="updateButtonData()">{{ title }}</button>',
-        methods: {
-          updateButtonData() {
-            this.$parent.$emit('UpdateButtonData', this.title)
-          }
-        }
-    })
-
     new Vue({
       el: '#app',
       data: {
-        email: 'john@doe.com',
-        password: '',
-        buttonData: ''
+        media: [],
+        headers: [
+          'UsageClass',
+          'CheckoutType',
+          'MaterialType',
+          'CheckoutYear',
+          'CheckoutMonth',
+          'Checkouts',
+          'Title',
+          'Creator',
+          'Subjects',
+          'Publisher',
+          'PublicationYear'
+        ]
       },
       methods: {
-        login() {
-          alert('login')
-          console.log(this.email);
-          console.log(this.password);
-        }
+
       },
       created() {
-        this.$on('UpdateButtonData', title => {
-          this.buttonData = title;
-        });
+        fetch('http://localhost:3000/media/test')
+          .then((response) => {
+            console.log(response);
+            return response.json();
+          })
+          .then((myJson) => {
+            this.media = myJson;
+          });
       }
     })
   </script>

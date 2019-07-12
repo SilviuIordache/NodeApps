@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const config = require('../../config.js');
+const config = require('../../../config.js');
 
 const col = config.collection;
 const db = config.db;
@@ -20,11 +20,11 @@ const mediaSchema = new Schema({
 },
 { collection: `${col}`})
 
-mediaSchema.index({'Publisher': 1, 'Creator': 1, 'CheckoutType': 1})
+// mediaSchema.index({'Publisher': 1, 'Creator': 1, 'CheckoutType': 1})
 
-db.col.createIndex(
-    {Creator: 1, Publisher: 1, MaterialType: 1},
-);
+// db.col.createIndex(
+//     {Creator: 1, Publisher: 1, MaterialType: 1},
+// );
 
 
 

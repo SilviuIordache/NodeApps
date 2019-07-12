@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- development version, includes helpful console warnings -->
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>Document</title>
+</head>
+
+<body>
+
+  <div id="app">
+    <h1>{{ buttonData }}</h1>
+    <p>{{ email }}</p>
+    <p>{{ password }}</p>
+    <input type="email" v-model="email">
+    <input type="password" v-model="password">
+    <button @click="login()">Log in</button>
+    <a href="#" v-on:click.prevent="myMethod()"></a>
+    <my-button title="button 1"></my-button>
+    <my-button title="button 2"></my-button>
+    <my-button title="button 3"></my-button>
+    <my-button title="button 4"></my-button>
+  </div>
+
+  <script>
+    Vue.component('my-button', {
+        data: function () {
+          return {
+            count: 0
+          }
+        },
+        props: {
+          title: ''
+        },
+        template: '<button @click="updateButtonData()">{{ title }}</button>',
+        methods: {
+          updateButtonData() {
+            this.$parent.$emit('UpdateButtonData', this.title)
+          }
+        }
+    })
+
+    new Vue({
+      el: '#app',
+      data: {
+        email: 'john@doe.com',
+        password: '',
+        buttonData: ''
+      },
+      methods: {
+        login() {
+          alert('login')
+          console.log(this.email);
+          console.log(this.password);
+        }
+      },
+      created() {
+        this.$on('UpdateButtonData', title => {
+          this.buttonData = title;
+        });
+      }
+    })
+  </script>
+
+</body>
+
+</html>

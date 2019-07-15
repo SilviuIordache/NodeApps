@@ -3,19 +3,17 @@ Vue.component('media', {
   template: `
   <article class="card mt-5"> 
     <section class="card-header"> 
-      by {{ checkEmpty(Creator) }}
+     creator: {{ trimTitle(Creator) }}
     </section>
     <section class="card-body">
-      <h5 class="card-title text-center text-truncate"> title: {{ trimTitle(Title) }} </h5>
+      <h5 class="card-title text-center text-truncate"> {{ Creator }} </h5>
       <p class="card-text"> Publisher: {{ Publisher }} </p>
-      <p class="card-text"> type: {{ MaterialType }} </p>
-      <p class="card-text"> type: {{ MaterialType }} </p>
-      <p class="card-text"> type: {{ MaterialType }} </p>
-      <p class="card-text"> type: {{ MaterialType }} </p>
-      <p class="card-text"> type: {{ MaterialType }} </p>
+      <p class="card-text"> Type: {{ MaterialType }} </p>
+      <p class="card-text"> CheckoutYear: {{ CheckoutYear }} </p>
+      <p class="card-text"> PublicationYear: {{ PublicationYear }} </p>
     </section>
     <div class="card-footer text-muted">
-      Publicated on: {{ PublicationYear }}
+     id: {{ _id }}
     </div>
   </article>
     `,
@@ -32,10 +30,10 @@ Vue.component('media', {
             arr = newStr.split(' [');
             newStr = arr[0];
           }
+          str = newStr;
         }
-        return newStr;
+        return str;
       },
-
     }
 });
 
@@ -44,10 +42,16 @@ Vue.component('media-list', {
   template: `
   <div class="col">
     <media class="row" 
-      v-for="media in mediaItems" 
+      v-for="media in mediaItems"
+      :_id ="media._id" 
+      :UsageClass="media.UsageClass" 
+      :CheckoutType="media.CheckoutType" 
       :MaterialType="media.MaterialType" 
+      :CheckoutYear="media.CheckoutYear"
+      :Checkouts="media.Checkouts" 
       :Title="media.Title"
       :Creator="media.Creator" 
+      :Subjects="media.Subjects"  
       :Publisher="media.Publisher" 
       :PublicationYear="media.PublicationYear"> 
     </media>
@@ -58,7 +62,7 @@ Vue.component('media-list', {
 const mediaComp = Vue.component('mediaItems', {
   mounted: function () {
     //get mediaItems
-    axios.get('/media/page/0').then((resp) => {
+    axios('/media').then((resp) => {
       this.mediaItems = resp.data;
     });
   },
@@ -70,7 +74,7 @@ const mediaComp = Vue.component('mediaItems', {
 
   template: `
   <article>
-  <media-list :mediaItems='mediaItems'></media-list>
+    <media-list :mediaItems='mediaItems'></media-list>
   </article>
   `
 })

@@ -7,11 +7,11 @@ Vue.component('navigation', {
           src="https://installeranalytics.com/common/images/Installer_Analytics_Logo_No_Text.svg"/>
       </a>
       <div class="nav justify-content-end">
-        <a class="nav-item nav-link" href="#/media">
-          Media
+        <a class="nav-item nav-link" href="/"> 
+          Media 
         </a>
-        <a class="nav-item nav-link" href="/">
-          Publishers
+        <a class="nav-item nav-link" href="#/addItem"> 
+          (+) New 
         </a>
       </div>
     </nav>
@@ -20,5 +20,5 @@ Vue.component('navigation', {
 
 // Define a new component called footer
 Vue.component('copyright', {
-  template: '<footer class="text-center m-5"> Caphyon 2018 </footer>'
+  template: '<footer class="text-center m-5"> Caphyon 2019 </footer>'
 });

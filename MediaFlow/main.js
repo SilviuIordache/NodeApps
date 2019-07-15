@@ -5,8 +5,8 @@ const url = 'mongodb://localhost:27017/';
 const config = require('../MediaFlow/config');
 
 let chunkNo = 0;
-const chunk = 100;
-const limit = 100;
+const chunk = 10000;
+const limit = 500000;
 const totalChunks = Math.ceil(limit / chunk);
 
 let currentLine = 0;

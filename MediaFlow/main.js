@@ -5,8 +5,8 @@ const url = 'mongodb://localhost:27017/';
 const config = require('../MediaFlow/config');
 
 let chunkNo = 0;
-const chunk = 40000;
-const limit = 1000000;
+const chunk = 10000;
+const limit = 100023;
 const totalChunks = limit / chunk;
 
 let currentLine = 0;
@@ -37,9 +37,7 @@ mdbclient.connect(url, {
         .pipe(csv())
         .on('data', (data) => {
           if (currentLine >= limit) {
-            console.log('end');
-            stream.end();
-            return
+            return stream.end();
           }
 
           // trim extra characters
@@ -51,8 +49,8 @@ mdbclient.connect(url, {
 
 
           if (currentLine % chunk === 0) {
-            if (results) {
-              col.insertMany([...results], (err, res) => {
+            if (results.length > 0) {
+              col.insertMany(results, (err, res) => {
                 if (err) console.error(err);
                 chunkNo++;
                 console.log(`chunk: ${chunkNo}/${totalChunks}`);
@@ -63,12 +61,14 @@ mdbclient.connect(url, {
           
         })
         .on('end', () => {
-          if (results)
+          if (results.length > 0) {
             col.insertMany(results, (err, res) => {
-              if (err) {
-                console.error(err);
-              }
+              if (err) console.error(err);
+              chunkNo++;
+              console.log(`final chunk: ${chunkNo}/${totalChunks}`);
             });
+          }
+          results = [];
         });
     });
 });

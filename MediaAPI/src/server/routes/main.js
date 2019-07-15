@@ -1,4 +1,5 @@
 const Router = require('express').Router;
+
 const mediaRoutes = require('./media');
 const publisherRoutes = require('./publisher');
 

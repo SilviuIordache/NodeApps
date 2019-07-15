@@ -1,7 +1,9 @@
 const express = require('express');
 const bp = require('body-parser');
 const mongoose = require('mongoose');
-var cors = require('cors')
+var cors = require('cors');
+const path = require('path');
+
 mongoose.set('useFindAndModify', false);
 
 const portNo = 3000;
@@ -37,13 +39,23 @@ app.use(cors());
 app.use(bp.urlencoded({
   extended: false
 }))
+
 app.use(bp.json());
 
+app.use(express.static(path.join(__dirname, 'node_modules')));
 
 // load routes
-app.use('/', routes);
+app.use(routes);
 
+// serves files from node_modules.
+app.use(express.static(path.join(__dirname, './node_modules'), {
+  maxAge: 24 * 60 * 60 * 1000
+}));
 
+// serve static files from client.
+app.use(express.static(path.join(__dirname, './src/client'), {
+  maxAge: 24 * 60 * 60 * 1000
+}));
 
 app.listen(portNo, () => {
   console.log(`listening on port ${portNo}`);

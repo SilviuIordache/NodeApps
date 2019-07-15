@@ -33,9 +33,9 @@ mediaRoutes.get('/search', (req, res) => {
 })
 
 //show by pages (done) TO DO : query params
-mediaRoutes.get('/', (req, res) => {
+mediaRoutes.get('/page/:page', (req, res) => {
 
-  const page = req.query['page'];
+  const page = req.params.page;
 
   mediaController.getMediaByPage(
     page,

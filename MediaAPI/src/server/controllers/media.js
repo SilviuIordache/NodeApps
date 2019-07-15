@@ -1,7 +1,7 @@
 class MediaController {
   constructor(mediaModel) {
     this.mediaItems = mediaModel;
-    this.itemsPerPage = 3;
+    this.itemsPerPage = 5;
   }
 
   // getting first 5 items (done)

@@ -5,20 +5,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <!-- development version, includes helpful console warnings -->
+
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <title>Document</title>
 </head>
 
 <body>
-
-
-  <div id="app">
-    <!-- <div v-for="item in media">
-        <p> {{ item }} </p>
-    </div> -->
+  <!-- <div id="app">
     <table class="table table-striped table-bordered table-hover table-sm">
       <thead class="thead-dark">
         <tr>
@@ -43,43 +42,68 @@
 
     </table>
 
+    <header>
+      navigation  
+      <router-link to="/media/test">First 5 media</router-link>
+      <router-link to="/media/search">Search</router-link>
+    </header>
+      
+    <main class='container'>
+      <router-view>
+
+      </router-view>
+    </main>
+  </div> -->
+
+  <div id="media">
+    <header>
+      <navigation></navigation>    
+    </header>
+    <main class="container">
+      <router-view></router-view>
+    </main>
+
+    <copyright></copyright>
   </div>
 
   <script>
-    new Vue({
-      el: '#app',
-      data: {
-        media: [],
-        headers: [
-          'UsageClass',
-          'CheckoutType',
-          'MaterialType',
-          'CheckoutYear',
-          'CheckoutMonth',
-          'Checkouts',
-          'Title',
-          'Creator',
-          'Subjects',
-          'Publisher',
-          'PublicationYear'
-        ]
-      },
-      methods: {
+  // new Vue({
+  //     el: '#app',
+  //     data: {
+  //       media: [],
+  //       headers: [
+  //         'UsageClass',
+  //         'CheckoutType',
+  //         'MaterialType',
+  //         'CheckoutYear',
+  //         'CheckoutMonth',
+  //         'Checkouts',
+  //         'Title',
+  //         'Creator',
+  //         'Subjects',
+  //         'Publisher',
+  //         'PublicationYear'
+  //       ]
+  //     },
+  //     methods: {
+  //     },
+  //     created() {
+  //       fetch('http://localhost:3000/media/test')
+  //         .then((response) => {
+  //           console.log(response);
+  //           return response.json();
+  //         })
+  //         .then((myJson) => {
+  //           this.media = myJson;
+  //         });
+  //     }
+  //   })
 
-      },
-      created() {
-        fetch('http://localhost:3000/media/test')
-          .then((response) => {
-            console.log(response);
-            return response.json();
-          })
-          .then((myJson) => {
-            this.media = myJson;
-          });
-      }
-    })
   </script>
 
 </body>
-
+  <script src='page.js'></script>
+  <script src='media.js'></script>
+  <script src='routes.js'></script>
+  <script src='app.js'></script>
 </html>

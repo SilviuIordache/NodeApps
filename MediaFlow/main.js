@@ -5,12 +5,34 @@ const url = 'mongodb://localhost:27017/';
 const config = require('../MediaFlow/config');
 
 let chunkNo = 0;
-const chunk = 10000;
-const limit = 100023;
-const totalChunks = limit / chunk;
+const chunk = 100;
+const limit = 100;
+const totalChunks = Math.ceil(limit / chunk);
 
 let currentLine = 0;
 let results = [];
+
+function trimTitle( str ) {
+  let arr = [];
+  let newStr = '';
+
+  if (str.includes('/')) {
+    arr = str.split(' / ');
+    newStr = arr[0];
+    newStr = newStr.slice(1);
+    if (newStr.includes('[')) {
+      arr = newStr.split(' [');
+      newStr = arr[0];
+    }
+  }
+  return newStr;
+}
+
+function markIfEmpty(str) {
+  if (str === '')
+    return '-';
+  else return str
+}
 // connect to the server
 mdbclient.connect(url, {
   useNewUrlParser: true
@@ -43,6 +65,12 @@ mdbclient.connect(url, {
           // trim extra characters
           data['CheckoutYear'] = data['CheckoutYear'].replace(/\D/g, '');
           data['PublicationYear'] = data['PublicationYear'].replace(/\D/g, '');
+          //data['Title'] = trimTitle(data['Title']);
+
+          // check all fields for empty '' string and replace with - if so
+          for (key in data) {
+            data[key] = markIfEmpty(data[key]);
+          }
 
           results.push(data)
           currentLine++;

@@ -1,39 +1,41 @@
 Vue.component('media', {
   props: ['_id', 'UsageClass','CheckoutType','MaterialType', 'CheckoutYear', 'Checkouts', 'Title', 'Creator', 'Subjects', 'Publisher', 'PublicationYear'],
   template: `
-  <article class="card mt-5"> 
-    <section class="card-header"> 
-     creator: {{ Creator }}
-    </section>
-    <section class="card-body">
-      <h5 class="card-title text-center text-truncate"> {{ trimTitle(Title) }} </h5>
-      <p class="card-text"> 
-        <span class="font-weight-bold"> Type:</span> 
-        <span class="font-weight-normal"> {{ MaterialType }} </span>
-      </p>
-      <p class="card-text"> 
-        <span class="font-weight-bold"> Publisher:</span> 
-        <span class="font-weight-normal"> {{ Publisher }} </span>
-      </p>
-      <p class="card-text"> 
-        <span class="font-weight-bold"> Subjects:</span> 
-        <span class="font-weight-normal"> {{ Subjects }} </span>
-      </p>
-      <p class="card-text"> 
-        <span class="font-weight-bold"> PublicationYear:</span> 
-        <span class="font-weight-normal"> {{ PublicationYear }} </span>
-      </p>
-      <p class="card-text"> 
-        <span class="font-weight-bold"> CheckoutYear:</span> 
-        <span class="font-weight-normal"> {{ CheckoutYear }} </span>
-      </p>
-    </section>
+    <div class="col col-md-6 col-xl-4">
+      <article class="card mt-5"> 
+        <section class="card-header"> 
+        creator: {{ Creator }}
+        </section>
+        <section class="card-body">
+          <h5 class="card-title text-center text-truncate"> {{ trimTitle(Title) }} </h5>
+          <p class="card-text"> 
+            <span class="font-weight-bold"> Type:</span> 
+            <span class="font-weight-normal"> {{ MaterialType }} </span>
+          </p>
+          <p class="card-text"> 
+            <span class="font-weight-bold"> Publisher:</span> 
+            <span class="font-weight-normal"> {{ Publisher }} </span>
+          </p>
+          <p class="card-text"> 
+            <span class="font-weight-bold"> Subjects:</span> 
+            <span class="font-weight-normal"> {{ Subjects }} </span>
+          </p>
+          <p class="card-text"> 
+            <span class="font-weight-bold"> PublicationYear:</span> 
+            <span class="font-weight-normal"> {{ PublicationYear }} </span>
+          </p>
+          <p class="card-text"> 
+            <span class="font-weight-bold"> CheckoutYear:</span> 
+            <span class="font-weight-normal"> {{ CheckoutYear }} </span>
+          </p>
+        </section>
 
-    <div class="card-footer text-muted">
-     id: {{ _id }}
+        <div class="card-footer text-muted">
+        id: {{ _id }}
+        </div>
+
+      </article>
     </div>
-
-  </article>
     `,
     methods: {
        trimTitle: (str) => {
@@ -58,55 +60,55 @@ Vue.component('media', {
 Vue.component('media-list', {
   props: ['mediaItems'],
   template: `
-  <div class="row">
-    <media class="col-4" 
-      v-for="media in mediaItems"
-      :_id ="media._id" 
-      :UsageClass="media.UsageClass" 
-      :CheckoutType="media.CheckoutType" 
-      :MaterialType="media.MaterialType" 
-      :CheckoutYear="media.CheckoutYear"
-      :Checkouts="media.Checkouts" 
-      :Title="media.Title"
-      :Creator="media.Creator" 
-      :Subjects="media.Subjects"  
-      :Publisher="media.Publisher" 
-      :PublicationYear="media.PublicationYear"> 
-    </media>
-  </div>
+    <div class="row">
+      <media 
+        v-for="media in mediaItems"
+        :_id ="media._id" 
+        :UsageClass="media.UsageClass" 
+        :CheckoutType="media.CheckoutType" 
+        :MaterialType="media.MaterialType" 
+        :CheckoutYear="media.CheckoutYear"
+        :Checkouts="media.Checkouts" 
+        :Title="media.Title"
+        :Creator="media.Creator" 
+        :Subjects="media.Subjects"  
+        :Publisher="media.Publisher" 
+        :PublicationYear="media.PublicationYear"> 
+      </media>
+    </div>
   `
 })
 
 const filterBar = Vue.component('filter-bar', {
   props: ['mediaItems'],
+  data: function() {
+    return {
+      ord: 'asc'
+    };
+  },
   template: `
   <div class="border-right"> 
     <div class="sidebar-heading">Filters</div>
-
-    <div class="list-group list-group-flush">
-      <a href="#" class="list-group-item list-group-item-action bg-light">
-        Order 
-        <div class="btn-group list-group-item" id="sort-order" role="group" aria-label="Basic example">
-          <button v-on:click="changeOrder('asc')"  type="button" class="btn btn-secondary">asc</button>
-          <button v-on:click="changeOrder('desc')" type="button" class="btn btn-secondary">desc</button>
-        </div>
-      </a>
-      <a href="#" class="list-group-item list-group-item-action bg-light">Shortcuts</a>
-    </div> 
+      <div class="btn-group" id="sort-order" role="group" aria-label="Basic example">
+      <button v-bind:disabled='ord === "asc" ? true : false' v-on:click="changeOrder('asc')"  type="button" class="btn btn-secondary">asc</button>
+      <button v-bind:disabled='ord === "desc" ? true : false' v-on:click="changeOrder('desc')" type="button" class="btn btn-secondary">desc</button>
+    </div>
   </div>
   `,
   methods : {
-    changeOrder: function(val) {
+    changeOrder: function(ord) {
       // emit event
-      this.$parent.$emit('filter-bar:orderChanged', val);
+      this.ord = ord;
+      this.$parent.$emit('filter-bar:orderChanged', ord);
     }
   }
 })
 
-const mediaComp = Vue.component('mediaItems', {
+const mediaItems = Vue.component('mediaItems', {
   created: function () {
     // change order event listener
-    this.$on('filter-bar:orderChanged', (ord) => {
+    this.$on('filter-bar:orderChanged', 
+    (ord) => {
       // this.ord gets value from event listener
       this.ord = ord;
       this.getMediaItems();
@@ -116,7 +118,7 @@ const mediaComp = Vue.component('mediaItems', {
     //get mediaItems
     this.getMediaItems();
   },
-  data: () => {
+  data: function() {
     return {
       ord: 'asc',
       mediaItems: []
@@ -131,17 +133,14 @@ const mediaComp = Vue.component('mediaItems', {
     }
   },
   template: `
-    <article>
+    <article class="container">
       <div class="row">
-
-        <div class="col-3">
+        <div class="col col-md-2">
           <filter-bar></filter-bar>
         </div> 
-
-        <div class="col-9">
-          <media-list :mediaItems='mediaItems'></media-list>
+        <div class="col col-md-10">
+          <media-list :mediaItems='mediaItems'></media-list>.
         </div> 
-
       </div> 
     </article>
   `

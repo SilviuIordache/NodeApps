@@ -1,5 +1,5 @@
 const routes = [
-  { path: '/', component: mediaComp },
+  { path: '/', component: mediaItems },
   { path: '/addItem', component: addMedia },
 ];
 

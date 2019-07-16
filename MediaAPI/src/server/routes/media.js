@@ -32,13 +32,16 @@ mediaRoutes.get('/search', (req, res) => {
   })
 })
 
-//show by pages (done) TO DO : query params
+//show by pages (done) 
 mediaRoutes.get('/page/:page', (req, res) => {
-
   const page = req.params.page;
+  const ord = req.query['ord'];
+  let ordParam = (ord === 'asc' ? 1 : -1)
+  console.log(ordParam);
 
   mediaController.getMediaByPage(
     page,
+    ordParam,
     (err, result) => {
       if (err) {
         console.log(err);
@@ -50,7 +53,6 @@ mediaRoutes.get('/page/:page', (req, res) => {
 
 // show by id (done)
 mediaRoutes.get('/:id', (req, res) => {
-  //console.log(`Got this: ${req.params['id']}. type: ${typeof req.params['id']}`);
   mediaController.getMediaById(
     req.params['id'],
     (err, result) => {

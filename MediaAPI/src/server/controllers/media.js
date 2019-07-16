@@ -1,7 +1,7 @@
 class MediaController {
   constructor(mediaModel) {
     this.mediaItems = mediaModel;
-    this.itemsPerPage = 5;
+    this.itemsPerPage = 15;
   }
 
   // getting first 5 items (done)
@@ -46,12 +46,13 @@ class MediaController {
   }
 
   // pagination function (done)
-  getMediaByPage(page, done) {
+  getMediaByPage(page, order, done) {
     this.mediaItems
     .find({}, (err, res) => {
       if (err) return console.log(err);
       return done(null, res);
     })
+    .sort({'_id': order})
     .skip(page * this.itemsPerPage)
     .limit(this.itemsPerPage);
   };

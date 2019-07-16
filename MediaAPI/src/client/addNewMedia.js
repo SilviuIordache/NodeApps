@@ -1,38 +1,4 @@
-
-const addMediaComp = Vue.component('mediaItems', {
-  mounted: function () {
-    axios('/media')
-    .then((resp) => {
-      this.mediaItems = resp.data;
-    });
-
-    this.$on('addMedia', (media) => {
-      axios.post('/media', {
-        UsageClass: media.UsageClass,
-        CheckoutType: media.CheckoutType,
-        MaterialType: media.MaterialType, 
-        CheckoutYear: media.CheckoutYear, 
-        Checkouts: media.Checkouts, 
-        Title: media.Title, 
-        Creator: media.Creator, 
-        Subjects: media.Subjects, 
-        Publisher: media.Publisher, 
-        PublicationYear: media.PublicationYear
-      }).then(() => {
-        this.mediaItems.push(media);
-      });
-    });
-  },
-  data: function () {
-    return {
-      mediaItems: []
-    };
-  },
-  template: ` <article><add-media></add-media> </article>`
-});
-
-
-Vue.component('add-media', {
+const addMedia = Vue.component('add-media', {
   data: function () {
     return {
       media: {
@@ -52,7 +18,21 @@ Vue.component('add-media', {
   },
   methods: {
     addMedia: function () {
-      this.$parent.$emit('addMedia', this.media);
+      axios.post('/media', {
+        UsageClass: this.media.UsageClass,
+        CheckoutType: this.media.CheckoutType,
+        MaterialType: this.media.MaterialType, 
+        CheckoutYear: this.media.CheckoutYear, 
+        Checkouts: this.media.Checkouts, 
+        Title: this.media.Title, 
+        Creator: this.media.Creator, 
+        Subjects: this.media.Subjects, 
+        Publisher: this.media.Publisher, 
+        PublicationYear: this.media.PublicationYear
+      }).then(() => {
+        //to do: redirect
+        router.push('/');
+      });
     }
   },
   template: `

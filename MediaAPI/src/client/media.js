@@ -3,18 +3,36 @@ Vue.component('media', {
   template: `
   <article class="card mt-5"> 
     <section class="card-header"> 
-     creator: {{ trimTitle(Creator) }}
+     creator: {{ Creator }}
     </section>
     <section class="card-body">
-      <h5 class="card-title text-center text-truncate"> {{ Creator }} </h5>
-      <p class="card-text"> Publisher: {{ Publisher }} </p>
-      <p class="card-text"> Type: {{ MaterialType }} </p>
-      <p class="card-text"> CheckoutYear: {{ CheckoutYear }} </p>
-      <p class="card-text"> PublicationYear: {{ PublicationYear }} </p>
+      <h5 class="card-title text-center text-truncate"> {{ trimTitle(Title) }} </h5>
+      <p class="card-text"> 
+        <span class="font-weight-bold"> Type:</span> 
+        <span class="font-weight-normal"> {{ MaterialType }} </span>
+      </p>
+      <p class="card-text"> 
+        <span class="font-weight-bold"> Publisher:</span> 
+        <span class="font-weight-normal"> {{ Publisher }} </span>
+      </p>
+      <p class="card-text"> 
+        <span class="font-weight-bold"> Subjects:</span> 
+        <span class="font-weight-normal"> {{ Subjects }} </span>
+      </p>
+      <p class="card-text"> 
+        <span class="font-weight-bold"> PublicationYear:</span> 
+        <span class="font-weight-normal"> {{ PublicationYear }} </span>
+      </p>
+      <p class="card-text"> 
+        <span class="font-weight-bold"> CheckoutYear:</span> 
+        <span class="font-weight-normal"> {{ CheckoutYear }} </span>
+      </p>
     </section>
+
     <div class="card-footer text-muted">
      id: {{ _id }}
     </div>
+
   </article>
     `,
     methods: {
@@ -22,7 +40,7 @@ Vue.component('media', {
         let arr = [];
         let newStr = '';
       
-        if (str.includes('/')) {
+        if (str && str.includes('/')) {
           arr = str.split(' / ');
           newStr = arr[0];
           //newStr = newStr.slice(1);
@@ -40,8 +58,8 @@ Vue.component('media', {
 Vue.component('media-list', {
   props: ['mediaItems'],
   template: `
-  <div class="col">
-    <media class="row" 
+  <div class="row">
+    <media class="col-4" 
       v-for="media in mediaItems"
       :_id ="media._id" 
       :UsageClass="media.UsageClass" 
@@ -59,10 +77,26 @@ Vue.component('media-list', {
   `
 })
 
+Vue.component('filter-bar', {
+  template: `
+  <div class="border-right"> 
+    <div class="sidebar-heading">Filters</div>
+
+    <div class="list-group list-group-flush">
+        <div class="btn-group list-group-item" role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-secondary">Ascending</button>
+          <button type="button" class="btn btn-secondary">Descending</button>
+        </div>
+        <a href="#" class="list-group-item list-group-item-action bg-light">Order</a>
+        <a href="#" class="list-group-item list-group-item-action bg-light">Shortcuts</a>
+    </div>
+  `
+})
+
 const mediaComp = Vue.component('mediaItems', {
   mounted: function () {
     //get mediaItems
-    axios('/media').then((resp) => {
+    axios('/media/page/0?ord=asc').then((resp) => {
       this.mediaItems = resp.data;
     });
   },
@@ -71,11 +105,20 @@ const mediaComp = Vue.component('mediaItems', {
       mediaItems: []
     };
   },
-
   template: `
-  <article>
-    <media-list :mediaItems='mediaItems'></media-list>
-  </article>
+    <article>
+      <div class="row">
+
+        <div class="col">
+          <filter-bar></filter-bar>
+        </div> 
+
+        <div class="col">
+          <media-list :mediaItems='mediaItems'></media-list>
+        </div> 
+        
+      </div> 
+    </article>
   `
 })
 

@@ -7,6 +7,5 @@ var mainRouter = new Router();
 
 // mounting the routes on their specific endpoints
 mainRouter.use('/media', mediaRoutes);
-mainRouter.use('/publisher', publisherRoutes);
 
 module.exports = mainRouter;

@@ -36,7 +36,7 @@ Vue.component('media', {
   </article>
     `,
     methods: {
-       trimTitle: function(str) {
+       trimTitle: (str) => {
         let arr = [];
         let newStr = '';
       
@@ -77,46 +77,71 @@ Vue.component('media-list', {
   `
 })
 
-Vue.component('filter-bar', {
+const filterBar = Vue.component('filter-bar', {
+  props: ['mediaItems'],
   template: `
   <div class="border-right"> 
     <div class="sidebar-heading">Filters</div>
 
     <div class="list-group list-group-flush">
-        <div class="btn-group list-group-item" role="group" aria-label="Basic example">
-          <button type="button" class="btn btn-secondary">Ascending</button>
-          <button type="button" class="btn btn-secondary">Descending</button>
+      <a href="#" class="list-group-item list-group-item-action bg-light">
+        Order 
+        <div class="btn-group list-group-item" id="sort-order" role="group" aria-label="Basic example">
+          <button v-on:click="changeOrder('asc')"  type="button" class="btn btn-secondary">asc</button>
+          <button v-on:click="changeOrder('desc')" type="button" class="btn btn-secondary">desc</button>
         </div>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Order</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Shortcuts</a>
-    </div>
-  `
+      </a>
+      <a href="#" class="list-group-item list-group-item-action bg-light">Shortcuts</a>
+    </div> 
+  </div>
+  `,
+  methods : {
+    changeOrder: function(val) {
+      // emit event
+      this.$parent.$emit('filter-bar:orderChanged', val);
+    }
+  }
 })
 
 const mediaComp = Vue.component('mediaItems', {
+  created: function () {
+    // change order event listener
+    this.$on('filter-bar:orderChanged', (ord) => {
+      // this.ord gets value from event listener
+      this.ord = ord;
+      this.getMediaItems();
+    })
+  },
   mounted: function () {
     //get mediaItems
-    axios('/media/page/0?ord=asc').then((resp) => {
-      this.mediaItems = resp.data;
-    });
+    this.getMediaItems();
   },
   data: () => {
     return {
+      ord: 'asc',
       mediaItems: []
     };
+  },
+  methods: {
+    getMediaItems : function() {
+      axios(`/media/page/0?ord=${this.ord}`)
+      .then((resp) => {
+        this.mediaItems = resp.data;
+      });
+    }
   },
   template: `
     <article>
       <div class="row">
 
-        <div class="col">
+        <div class="col-3">
           <filter-bar></filter-bar>
         </div> 
 
-        <div class="col">
+        <div class="col-9">
           <media-list :mediaItems='mediaItems'></media-list>
         </div> 
-        
+
       </div> 
     </article>
   `

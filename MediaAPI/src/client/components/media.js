@@ -1,11 +1,20 @@
 Vue.component('media', {
-  props: ['_id', 'UsageClass','CheckoutType','MaterialType', 'CheckoutYear', 'Checkouts', 'Title', 'Creator', 'Subjects', 'Publisher', 'PublicationYear'],
+  props: ['_id', 
+          'UsageClass',
+          'CheckoutType',
+          'MaterialType', 
+          'CheckoutYear', 
+          'Checkouts', 
+          'Title', 
+          'Creator', 
+          'Subjects', 
+          'Publisher', 
+          'PublicationYear'],
   template: `
     <div class="col col-md-6 col-xl-4">
       <article class="card mt-5"> 
         <section class="card-header"> 
           creator: {{ Creator }}
-          <button type="button" class="btn btn-light float-right">View</button>
         </section>
         <section class="card-body">
           <h5 class="card-title text-center text-truncate"> {{ trimTitle(Title) }} </h5>
@@ -32,7 +41,9 @@ Vue.component('media', {
         </section>
 
         <div class="card-footer text-muted">
-        id: {{ _id }}
+          <a class="nav-item nav-link" :href="'#/id/'+ _id">
+            id: {{ _id }}
+          </a>
         </div>
 
       </article>
@@ -58,6 +69,46 @@ Vue.component('media', {
     }
 });
 
+
+Vue.component('nav-bar', {
+  template: `
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item">
+            <router-link class="page-link" 
+              :to="{ path: '/page/' + (parseInt($route.params.page || 0) - 1) }">
+              Previous
+            </router-link>
+          </li>
+
+          <li class="page-item">
+            <router-link class="page-link" to="/page/0">
+              0
+            </router-link>
+          </li>
+
+          <li class="page-item">
+            <router-link class="page-link" to="/page/1">
+              1
+            </router-link>
+          </li>
+
+          <li class="page-item">
+            <router-link class="page-link" to="/page/2">
+              2
+            </router-link>
+          </li>
+
+          <router-link class="page-link" 
+            :to="{ path: '/page/' + (parseInt($route.params.page || 0) + 1) }">
+            Next
+          </router-link>
+
+        </ul>
+      </nav>
+    `
+});
+
 Vue.component('media-list', {
   props: ['mediaItems'],
   template: `
@@ -78,7 +129,18 @@ Vue.component('media-list', {
       </media>
     </div>
   `
-})
+});
+
+Vue.component('content-and-nav', {
+  props: ['mediaItems'],
+  template: `
+  <div>
+    <nav-bar></nav-bar>
+    <media-list :mediaItems='mediaItems'></media-list>
+    <nav-bar></nav-bar>
+  </div>
+  `
+});
 
 const filterBar = Vue.component('filter-bar', {
   props: ['mediaItems'],
@@ -125,12 +187,27 @@ const mediaItems = Vue.component('mediaItems', {
       mediaItems: []
     };
   },
+  // beforeRouteUpdate: function (to, from, next) {
+  //   this.getMediaItems();
+  //   window.scrollTo(0, 0);
+  //   next();
+  // },
   methods: {
     getMediaItems : function() {
-      axios(`/media/page/0?ord=${this.ord}`)
+      axios(`/media/page/${this.$route.params.page || 0}?ord=${this.ord}`)
       .then((resp) => {
         this.mediaItems = resp.data;
       });
+    },
+  },
+  watch: {
+    '$route.params.page': {
+      handler: function () {
+        this.getMediaItems();
+        window.scrollTo(0, 0);
+      },
+      deep: true,
+      immediate: true
     }
   },
   template: `
@@ -140,7 +217,7 @@ const mediaItems = Vue.component('mediaItems', {
           <filter-bar></filter-bar>
         </div> 
         <div class="col col-md-10">
-          <media-list :mediaItems='mediaItems'></media-list>.
+          <content-and-nav :mediaItems='mediaItems'></content-and-nav>
         </div> 
       </div> 
     </article>

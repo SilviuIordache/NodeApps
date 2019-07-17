@@ -37,7 +37,6 @@ mediaRoutes.get('/page/:page', (req, res) => {
   const page = req.params.page;
   const ord = req.query['ord'];
   let ordParam = (ord === 'asc' ? 1 : -1)
-  console.log(ordParam);
 
   mediaController.getMediaByPage(
     page,

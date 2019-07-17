@@ -4,7 +4,8 @@ Vue.component('media', {
     <div class="col col-md-6 col-xl-4">
       <article class="card mt-5"> 
         <section class="card-header"> 
-        creator: {{ Creator }}
+          creator: {{ Creator }}
+          <button type="button" class="btn btn-light float-right">View</button>
         </section>
         <section class="card-body">
           <h5 class="card-title text-center text-truncate"> {{ trimTitle(Title) }} </h5>

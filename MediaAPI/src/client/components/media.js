@@ -174,12 +174,12 @@ const mediaItems = Vue.component('mediaItems', {
     (ord) => {
       // this.ord gets value from event listener
       this.ord = ord;
-      this.getMediaItems();
+      this.getMediaItems(this.$route.params.page);
     })
   },
   mounted: function () {
     //get mediaItems
-    this.getMediaItems();
+    this.getMediaItems(this.$route.params.page);
   },
   data: function() {
     return {
@@ -187,29 +187,29 @@ const mediaItems = Vue.component('mediaItems', {
       mediaItems: []
     };
   },
-  // beforeRouteUpdate: function (to, from, next) {
-  //   this.getMediaItems();
-  //   window.scrollTo(0, 0);
-  //   next();
-  // },
+  beforeRouteUpdate: function (to, from, next) {
+    this.getMediaItems(to.params.page);
+    window.scrollTo(0, 0);
+    next();
+  },
   methods: {
-    getMediaItems : function() {
-      axios(`/media/page/${this.$route.params.page || 0}?ord=${this.ord}`)
+    getMediaItems : function(page) {
+      axios(`/media/page/${page || 0}?ord=${this.ord}`)
       .then((resp) => {
         this.mediaItems = resp.data;
       });
     },
   },
-  watch: {
-    '$route.params.page': {
-      handler: function () {
-        this.getMediaItems();
-        window.scrollTo(0, 0);
-      },
-      deep: true,
-      immediate: true
-    }
-  },
+  // watch: {
+  //   '$route.params.page': {
+  //     handler: function () {
+  //       this.getMediaItems();
+  //       window.scrollTo(0, 0);
+  //     },
+  //     deep: true,
+  //     immediate: true
+  //   }
+  // },
   template: `
     <article class="container">
       <div class="row">

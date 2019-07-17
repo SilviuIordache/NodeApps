@@ -14,29 +14,25 @@ Vue.component('media', {
     <div class="col col-md-6 col-xl-4">
       <article class="card mt-5"> 
         <section class="card-header"> 
-          creator: {{ Creator }}
+          by: {{ Creator }}
         </section>
         <section class="card-body">
           <h5 class="card-title text-center text-truncate"> {{ trimTitle(Title) }} </h5>
           <p class="card-text"> 
-            <span class="font-weight-bold"> Type:</span> 
+            <span class="font-weight-bold"> Category:</span> 
             <span class="font-weight-normal"> {{ MaterialType }} </span>
-          </p>
-          <p class="card-text"> 
-            <span class="font-weight-bold"> Publisher:</span> 
-            <span class="font-weight-normal"> {{ Publisher }} </span>
           </p>
           <p class="card-text"> 
             <span class="font-weight-bold"> Subjects:</span> 
             <span class="font-weight-normal"> {{ Subjects }} </span>
           </p>
           <p class="card-text"> 
-            <span class="font-weight-bold"> PublicationYear:</span> 
-            <span class="font-weight-normal"> {{ PublicationYear }} </span>
+            <span class="font-weight-bold"> Publisher:</span> 
+            <span class="font-weight-normal"> {{ Publisher }} </span>
           </p>
           <p class="card-text"> 
-            <span class="font-weight-bold"> CheckoutYear:</span> 
-            <span class="font-weight-normal"> {{ CheckoutYear }} </span>
+            <span class="font-weight-bold"> PublicationYear:</span> 
+            <span class="font-weight-normal"> {{ PublicationYear }} </span>
           </p>
         </section>
 
@@ -69,6 +65,27 @@ Vue.component('media', {
     }
 });
 
+Vue.component('media-list', {
+  props: ['mediaItems'],
+  template: `
+    <div class="row">
+      <media 
+        v-for="media in mediaItems"
+        :_id ="media._id" 
+        :UsageClass="media.UsageClass" 
+        :CheckoutType="media.CheckoutType" 
+        :MaterialType="media.MaterialType" 
+        :CheckoutYear="media.CheckoutYear"
+        :Checkouts="media.Checkouts" 
+        :Title="media.Title"
+        :Creator="media.Creator" 
+        :Subjects="media.Subjects"  
+        :Publisher="media.Publisher" 
+        :PublicationYear="media.PublicationYear"> 
+      </media>
+    </div>
+  `
+});
 
 Vue.component('nav-bar', {
   template: `
@@ -107,28 +124,6 @@ Vue.component('nav-bar', {
         </ul>
       </nav>
     `
-});
-
-Vue.component('media-list', {
-  props: ['mediaItems'],
-  template: `
-    <div class="row">
-      <media 
-        v-for="media in mediaItems"
-        :_id ="media._id" 
-        :UsageClass="media.UsageClass" 
-        :CheckoutType="media.CheckoutType" 
-        :MaterialType="media.MaterialType" 
-        :CheckoutYear="media.CheckoutYear"
-        :Checkouts="media.Checkouts" 
-        :Title="media.Title"
-        :Creator="media.Creator" 
-        :Subjects="media.Subjects"  
-        :Publisher="media.Publisher" 
-        :PublicationYear="media.PublicationYear"> 
-      </media>
-    </div>
-  `
 });
 
 Vue.component('content-and-nav', {

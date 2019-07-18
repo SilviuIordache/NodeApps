@@ -1,7 +1,6 @@
 class MediaController {
   constructor(mediaModel) {
     this.mediaItems = mediaModel;
-    this.itemsPerPage = 15;
   }
 
   // getting first 5 items (done)
@@ -23,8 +22,9 @@ class MediaController {
   // getting item by field (done)
   getMediaByField(page, field, done) {
     this.mediaItems
-      .find({ $text: { $search: field }
-        },
+      .find({
+        $text: { $search: field }
+      },
         (err, res) => {
           if (err) return done(err);
           return done(null, res)
@@ -36,26 +36,28 @@ class MediaController {
   // getting item by publisher
   getMediaByPublisher(page, publisher, done) {
     this.mediaItems
-    .find({Publisher: publisher},
-      (err, res) => {
-        if (err) return done(err);
-        return done(null, res)
-      })
-    .skip(this.itemsPerPage * page)
-    .limit(this.itemsPerPage)
+      .find({ Publisher: publisher },
+        (err, res) => {
+          if (err) return done(err);
+          return done(null, res)
+        })
+      .skip(this.itemsPerPage * page)
+      .limit(this.itemsPerPage)
   }
 
   // pagination function (done)
-  getMediaByPage(page, order, done) {
+  getMediaByPage(page, order, elemPerPage = 15, done) {
     this.mediaItems
-    .find({}, (err, res) => {
-      if (err) return console.log(err);
-      return done(null, res);
-    })
-    .sort({'_id': order})
-    .skip(page * this.itemsPerPage)
-    .limit(this.itemsPerPage);
+      .find({}, (err, res) => {
+        if (err) return console.log(err);
+        return done(null, res);
+      })
+      .sort({ '_id': order })
+      .skip(page * elemPerPage)
+      .limit(elemPerPage);
   };
+
+  getTotalMediaC
 
   // adding an item (done)
   createMedia(media, done) {
@@ -76,11 +78,11 @@ class MediaController {
         return done(null, res);
       });
   }
-  
+
   // modify item (done)
   editMediaItem(id, newValues, done) {
     console.log('editing media item');
-    this.mediaItems.findOneAndUpdate( 
+    this.mediaItems.findOneAndUpdate(
       { _id: id },
       newValues,
       { upsert: true, new: true, lean: true },

@@ -91,7 +91,7 @@ Vue.component('nav-bar', {
   template: `
     <nav aria-label="Page navigation example">
         <ul class="pagination">
-          <li class="page-item">
+          <li class="page-item" :class="{disabled: parseInt($route.params.page || 0)==0}">
             <router-link class="page-link" 
               :to="{ path: '/page/' + (parseInt($route.params.page || 0) - 1) }">
               Previous
@@ -179,7 +179,8 @@ const mediaItems = Vue.component('mediaItems', {
   data: function() {
     return {
       ord: 'asc',
-      mediaItems: []
+      mediaItems: [],
+      elemPerPage: 5
     };
   },
   beforeRouteUpdate: function (to, from, next) {
@@ -189,7 +190,7 @@ const mediaItems = Vue.component('mediaItems', {
   },
   methods: {
     getMediaItems : function(page) {
-      axios(`/media/page/${page || 0}?ord=${this.ord}`)
+      axios(`/media/page/${page || 0}?ord=${this.ord}&elemPerPage=${this.elemPerPage}`)
       .then((resp) => {
         this.mediaItems = resp.data;
       });

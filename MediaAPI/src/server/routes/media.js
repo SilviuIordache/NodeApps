@@ -36,11 +36,13 @@ mediaRoutes.get('/search', (req, res) => {
 mediaRoutes.get('/page/:page', (req, res) => {
   const page = req.params.page;
   const ord = req.query['ord'];
+  const elemPerPage = parseInt(req.query['elemPerPage'],10);
   let ordParam = (ord === 'asc' ? 1 : -1)
 
   mediaController.getMediaByPage(
     page,
     ordParam,
+    elemPerPage,
     (err, result) => {
       if (err) {
         console.log(err);

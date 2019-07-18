@@ -1,15 +1,15 @@
 Vue.component('media', {
-  props: ['_id', 
-          'UsageClass',
-          'CheckoutType',
-          'MaterialType', 
-          'CheckoutYear', 
-          'Checkouts', 
-          'Title', 
-          'Creator', 
-          'Subjects', 
-          'Publisher', 
-          'PublicationYear'],
+  props: ['_id',
+    'UsageClass',
+    'CheckoutType',
+    'MaterialType',
+    'CheckoutYear',
+    'Checkouts',
+    'Title',
+    'Creator',
+    'Subjects',
+    'Publisher',
+    'PublicationYear'],
   template: `
     <div class="col col-md-6 col-xl-4">
       <article class="card mt-5"> 
@@ -45,24 +45,24 @@ Vue.component('media', {
       </article>
     </div>
     `,
-    methods: {
-       trimTitle: (str) => {
-        let arr = [];
-        let newStr = '';
-      
-        if (str && str.includes('/')) {
-          arr = str.split(' / ');
+  methods: {
+    trimTitle: (str) => {
+      let arr = [];
+      let newStr = '';
+
+      if (str && str.includes('/')) {
+        arr = str.split(' / ');
+        newStr = arr[0];
+        //newStr = newStr.slice(1);
+        if (newStr.includes('[')) {
+          arr = newStr.split(' [');
           newStr = arr[0];
-          //newStr = newStr.slice(1);
-          if (newStr.includes('[')) {
-            arr = newStr.split(' [');
-            newStr = arr[0];
-          }
-          str = newStr;
         }
-        return str;
-      },
-    }
+        str = newStr;
+      }
+      return str;
+    },
+  }
 });
 
 Vue.component('media-list', {
@@ -93,31 +93,31 @@ Vue.component('pagination-bar', {
         <ul class="pagination">
           <li class="page-item" :class="{disabled: parseInt($route.params.page || 0)==0}">
             <router-link class="page-link" 
-              :to="{ path: '/page/' + (parseInt($route.params.page || 0) - 1) }">
+              :to="{ path: '/page/' + (parseInt($route.params.page || 0) - 1) + '?name=' + ($route.query.name || '')}">
               Previous
             </router-link>
           </li>
 
           <li class="page-item">
-            <router-link class="page-link" to="/page/0">
+            <router-link class="page-link" :to="{ path: '/page/0'  + '?name=' + ($route.query.name || '')}">
               0
             </router-link>
           </li>
 
           <li class="page-item">
-            <router-link class="page-link" to="/page/1">
+            <router-link class="page-link" :to="{ path: '/page/0'  + '?name=' + ($route.query.name || '')}">
               1
             </router-link>
           </li>
 
           <li class="page-item">
-            <router-link class="page-link" to="/page/2">
+            <router-link class="page-link" :to="{ path: '/page/0'  + '?name=' + ($route.query.name || '')}">
               2
             </router-link>
           </li>
 
           <router-link class="page-link" 
-            :to="{ path: '/page/' + (parseInt($route.params.page || 0) + 1) }">
+            :to="{ path: '/page/' + (parseInt($route.params.page || 0) + 1) + '?name=' + ($route.query.name || '')}"">
             Next
           </router-link>
 
@@ -139,7 +139,7 @@ Vue.component('content-and-pagination', {
 
 const filterBar = Vue.component('filter-bar', {
   props: ['mediaItems'],
-  data: function() {
+  data: function () {
     return {
       ord: 'asc'
     };
@@ -153,8 +153,8 @@ const filterBar = Vue.component('filter-bar', {
     </div>
   </div>
   `,
-  methods : {
-    changeOrder: function(ord) {
+  methods: {
+    changeOrder: function (ord) {
       // emit event
       this.ord = ord;
       this.$parent.$emit('filter-bar:orderChanged', ord);
@@ -165,18 +165,19 @@ const filterBar = Vue.component('filter-bar', {
 const mediaItems = Vue.component('mediaItems', {
   created: function () {
     // change order event listener
-    this.$on('filter-bar:orderChanged', 
-    (ord) => {
-      // this.ord gets value from event listener
-      this.ord = ord;
-      this.getMediaItems(this.$route.params.page);
-    })
+    this.$on('filter-bar:orderChanged',
+      (ord) => {
+        // this.ord gets value from event listener
+        this.ord = ord;
+        this.getMediaItems(this.$route.params.page);
+      })
   },
   mounted: function () {
     //get mediaItems
-    this.getMediaItems(this.$route.params.page, this.$route.query.name);
+    //this.getMediaItems(this.$route.params.page, this.$route.query.name);
+    router.push(`/page/0?name=`);
   },
-  data: function() {
+  data: function () {
     return {
       ord: 'asc',
       mediaItems: [],
@@ -189,11 +190,11 @@ const mediaItems = Vue.component('mediaItems', {
     next();
   },
   methods: {
-    getMediaItems : function(page, name) {
+    getMediaItems: function (page, name) {
       axios(`/media?page=${page || 0}&ord=${this.ord}&elemPerPage=${this.elemPerPage}&name=${name}`)
-      .then((resp) => {
-        this.mediaItems = resp.data;
-      });
+        .then((resp) => {
+          this.mediaItems = resp.data;
+        });
     },
   },
   template: `

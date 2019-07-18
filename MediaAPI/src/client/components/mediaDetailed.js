@@ -8,16 +8,22 @@ const getDetailedView = Vue.component('media-detailed', {
     }
   },
   methods: {
-      getMediaItem: function (id) {
-        axios(`/media/${id}`)
+    getMediaItem: function (id) {
+      axios(`/media/${id}`)
         .then((resp) => {
           this.mediaItem = resp.data;
         })
-      },
-      trimTitle: (str) => {
+    },
+    deleteMediaItem: function (id) {
+      axios.delete(`/media/${id}`)
+        .then((resp) => {
+          this.$router.push("/");
+        });
+    },
+    trimTitle: (str) => {
       let arr = [];
       let newStr = '';
-    
+
       if (str && str.includes('/')) {
         arr = str.split(' / ');
         newStr = arr[0];
@@ -73,7 +79,10 @@ const getDetailedView = Vue.component('media-detailed', {
         </p>
       </section>
       <div class="card-footer text-muted">
-        <a> id: {{ mediaItem._id }}</a> 
+        <a class="float-left"> id: {{ mediaItem._id }}</a> 
+        <button type="button" v-on:click="deleteMediaItem($route.params.id)" class="btn btn-danger float-right">
+          Delete
+        </button>
       </div>
     </article>
   </div>

@@ -20,27 +20,31 @@ mediaRoutes.get('/test', (req, res) => {
   })
 })
 
-// show by field (done) ex: // http://localhost:3000/media/search?field=Dragnea&page=0
+// show by words (done) ex: // http://localhost:3000/media/search?words=Dragnea&page=0
 mediaRoutes.get('/search', (req, res) => {
-  let field = req.query['field'];
+  let words = req.query['words'];
   let page = req.query['page'];
+  const elemPerPage = parseInt(req.query['elemPerPage'],10);
 
   if (page === undefined) page = 0;
-  mediaController.getMediaByField(page, field, (err, result) => {
+  mediaController.getMediaByWords(page, words, elemPerPage, (err, result) => {
     if(err) return res.status(500).send(JSON.stringify(err));
     res.json(result);
   })
 })
 
-//show by pages (done) 
-mediaRoutes.get('/page/:page', (req, res) => {
-  const page = req.params.page;
-  const ord = req.query['ord'];
-  const elemPerPage = parseInt(req.query['elemPerPage'],10);
+// Search query (with optional name)
+mediaRoutes.get('/', (req, res) => {
+  const elemsPerPage = 10;
+  const page = req.query.page || 0;
+  const name = req.query.name;
+  const ord = req.query.ord;
+  const elemPerPage = parseInt(req.query['elemPerPage']) || elemsPerPage;
   let ordParam = (ord === 'asc' ? 1 : -1)
 
-  mediaController.getMediaByPage(
+  mediaController.getMedia(
     page,
+    name,
     ordParam,
     elemPerPage,
     (err, result) => {
@@ -97,18 +101,5 @@ mediaRoutes.put('/', (req, res) => {
     res.json(result);
   });
 })
-
-// query by publisher
-mediaRoutes.get('/', (req, res) => {
-  let publisher = req.query['publisher'];
-  let page = req.query['page'];
-
-  mediaController.getMediaByPublisher(page, publisher, (err, result) => {
-    if(err) return res.status(500).send(JSON.stringify(err));
-    //res.json(result);
-    res.status(200).send(result);
-  })
-})
-
 
 module.exports = mediaRoutes;

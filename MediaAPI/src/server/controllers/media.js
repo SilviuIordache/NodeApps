@@ -19,36 +19,16 @@ class MediaController {
     })
   };
 
-  // getting item by field (done)
-  getMediaByField(page, field, done) {
-    this.mediaItems
-      .find({
-        $text: { $search: field }
-      },
-        (err, res) => {
-          if (err) return done(err);
-          return done(null, res)
-        })
-      .skip(this.itemsPerPage * page)
-      .limit(this.itemsPerPage)
-  }
-
-  // getting item by publisher
-  getMediaByPublisher(page, publisher, done) {
-    this.mediaItems
-      .find({ Publisher: publisher },
-        (err, res) => {
-          if (err) return done(err);
-          return done(null, res)
-        })
-      .skip(this.itemsPerPage * page)
-      .limit(this.itemsPerPage)
-  }
 
   // pagination function (done)
-  getMediaByPage(page, order, elemPerPage = 15, done) {
+  getMedia(page, name, order, elemPerPage = 15, done) {
+    let searchObj = {};
+    if (name) {
+      searchObj = {$text: { $search: name }}
+    }
     this.mediaItems
-      .find({}, (err, res) => {
+      .find( searchObj, 
+      (err, res) => {
         if (err) return console.log(err);
         return done(null, res);
       })
@@ -56,8 +36,6 @@ class MediaController {
       .skip(page * elemPerPage)
       .limit(elemPerPage);
   };
-
-  getTotalMediaC
 
   // adding an item (done)
   createMedia(media, done) {

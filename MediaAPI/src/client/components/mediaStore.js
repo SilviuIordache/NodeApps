@@ -190,7 +190,7 @@ const mediaItems = Vue.component('mediaItems', {
   },
   methods: {
     getMediaItems : function(page) {
-      axios(`/media/page/${page || 0}?ord=${this.ord}&elemPerPage=${this.elemPerPage}`)
+      axios(`/media?page=${page || 0}&ord=${this.ord}&elemPerPage=${this.elemPerPage}`)
       .then((resp) => {
         this.mediaItems = resp.data;
       });

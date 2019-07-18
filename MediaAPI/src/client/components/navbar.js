@@ -7,10 +7,7 @@ Vue.component('navigation', {
   },
   methods: {  
     searchStart: function () {
-        router.push(`/page/0?name=${this.searchData}`);
-      
-      // clear search input
-      this.searchData = ''
+        router.push(`/media/page/0?name=${this.searchData}`);
     }
   },
   template: `
@@ -26,11 +23,11 @@ Vue.component('navigation', {
           <input class="form-control" type="text" placeholder="Search" aria-label="Search" v-model="searchData">
         </div>
 
-        <a class="nav-item nav-link" href="#/page/0?name="> 
+        <a class="nav-item nav-link" href="#/media/"> 
           Media 
         </a>
 
-        <a class="nav-item nav-link" href="#/addItem"> 
+        <a class="nav-item nav-link" href="#/media/add"> 
           (+) New 
         </a>
       </div>

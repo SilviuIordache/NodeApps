@@ -87,7 +87,7 @@ Vue.component('media-list', {
   `
 });
 
-Vue.component('nav-bar', {
+Vue.component('pagination-bar', {
   template: `
     <nav aria-label="Page navigation example">
         <ul class="pagination">
@@ -126,13 +126,13 @@ Vue.component('nav-bar', {
     `
 });
 
-Vue.component('content-and-nav', {
+Vue.component('content-and-pagination', {
   props: ['mediaItems'],
   template: `
   <div>
-    <nav-bar></nav-bar>
+    <pagination-bar></pagination-bar>
     <media-list :mediaItems='mediaItems'></media-list>
-    <nav-bar></nav-bar>
+    <pagination-bar></pagination-bar>
   </div>
   `
 });
@@ -174,7 +174,7 @@ const mediaItems = Vue.component('mediaItems', {
   },
   mounted: function () {
     //get mediaItems
-    this.getMediaItems(this.$route.params.page);
+    this.getMediaItems(this.$route.params.page, this.$route.query.name);
   },
   data: function() {
     return {
@@ -184,28 +184,18 @@ const mediaItems = Vue.component('mediaItems', {
     };
   },
   beforeRouteUpdate: function (to, from, next) {
-    this.getMediaItems(to.params.page);
+    this.getMediaItems(to.params.page, to.query.name);
     window.scrollTo(0, 0);
     next();
   },
   methods: {
-    getMediaItems : function(page) {
-      axios(`/media?page=${page || 0}&ord=${this.ord}&elemPerPage=${this.elemPerPage}`)
+    getMediaItems : function(page, name) {
+      axios(`/media?page=${page || 0}&ord=${this.ord}&elemPerPage=${this.elemPerPage}&name=${name}`)
       .then((resp) => {
         this.mediaItems = resp.data;
       });
     },
   },
-  // watch: {
-  //   '$route.params.page': {
-  //     handler: function () {
-  //       this.getMediaItems();
-  //       window.scrollTo(0, 0);
-  //     },
-  //     deep: true,
-  //     immediate: true
-  //   }
-  // },
   template: `
     <article class="container">
       <div class="row">
@@ -213,7 +203,7 @@ const mediaItems = Vue.component('mediaItems', {
           <filter-bar></filter-bar>
         </div> 
         <div class="col col-md-10">
-          <content-and-nav :mediaItems='mediaItems'></content-and-nav>
+          <content-and-pagination :mediaItems='mediaItems'></content-and-pagination>
         </div> 
       </div> 
     </article>

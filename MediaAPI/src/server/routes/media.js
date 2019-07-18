@@ -8,31 +8,6 @@ var mediaRoutes = new Router();
 const mediaController = new MediaController(mediaModel);
 
 
-// show first 6 media files (done)
-mediaRoutes.get('/test', (req, res) => {
-  //console.log(req.params['id']);
-  mediaController.getSomeMedia((err, result) => {
-    if (err) {
-      console.log(err);
-      return res.status(500).end();
-    }
-    res.json(result);
-  })
-})
-
-// show by words (done) ex: // http://localhost:3000/media/search?words=Dragnea&page=0
-mediaRoutes.get('/search', (req, res) => {
-  let words = req.query['words'];
-  let page = req.query['page'];
-  const elemPerPage = parseInt(req.query['elemPerPage'],10);
-
-  if (page === undefined) page = 0;
-  mediaController.getMediaByWords(page, words, elemPerPage, (err, result) => {
-    if(err) return res.status(500).send(JSON.stringify(err));
-    res.json(result);
-  })
-})
-
 // Search query (with optional name)
 mediaRoutes.get('/', (req, res) => {
   const elemsPerPage = 10;

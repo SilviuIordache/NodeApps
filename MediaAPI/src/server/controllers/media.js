@@ -3,13 +3,6 @@ class MediaController {
     this.mediaItems = mediaModel;
   }
 
-  // getting first 5 items (done)
-  getSomeMedia(done) {
-    this.mediaItems.find({}, (err, res) => {
-      if (err) return console.log(err);
-      return done(null, res);
-    }).limit(5);
-  };
 
   // getting item by id (done)
   getMediaById(id, done) {
@@ -18,7 +11,6 @@ class MediaController {
       return done(null, res);
     })
   };
-
 
   // pagination function (done)
   getMedia(page, name, order, elemPerPage = 15, done) {

@@ -1,37 +1,64 @@
-const addMedia = Vue.component('add-media', {
+const mediaForm = Vue.component('add-media', {
+  mounted: function () {
+    if(this.$route.query.id){
+      this.getMediaItem(this.$route.query.id);
+    }
+  },
   data: function () {
     return {
       media: {
         UsageClass: '',
         CheckoutType: '',
-        MaterialType: '', 
-        CheckoutYear: '', 
-        Checkouts: '', 
-        Title: '', 
-        Creator: '', 
-        Subjects: '', 
-        Publisher: '', 
-        PublicationYear: '',
-        name: ''
+        MaterialType: '',
+        CheckoutYear: '',
+        Checkouts: '',
+        Title: '',
+        Creator: '',
+        Subjects: '',
+        Publisher: '',
+        PublicationYear: ''
       }
     };
   },
   methods: {
+    getMediaItem: function (id) {
+      axios(`/media/${id}`)
+        .then((resp) => {
+          this.media = resp.data;
+        })
+    },
     addMedia: function () {
       axios.post('/media', {
         UsageClass: this.media.UsageClass,
         CheckoutType: this.media.CheckoutType,
-        MaterialType: this.media.MaterialType, 
-        CheckoutYear: this.media.CheckoutYear, 
-        Checkouts: this.media.Checkouts, 
-        Title: this.media.Title, 
-        Creator: this.media.Creator, 
-        Subjects: this.media.Subjects, 
-        Publisher: this.media.Publisher, 
+        MaterialType: this.media.MaterialType,
+        CheckoutYear: this.media.CheckoutYear,
+        Checkouts: this.media.Checkouts,
+        Title: this.media.Title,
+        Creator: this.media.Creator,
+        Subjects: this.media.Subjects,
+        Publisher: this.media.Publisher,
         PublicationYear: this.media.PublicationYear
       }).then(() => {
         //to do: redirect
-        router.push('/');
+        router.push("/page/0?name=");
+      });
+    },
+    editMedia: function () {
+      axios.put(`/media?id=${$route.query.id}`, {
+        UsageClass: this.media.UsageClass,
+        CheckoutType: this.media.CheckoutType,
+        MaterialType: this.media.MaterialType,
+        CheckoutYear: this.media.CheckoutYear,
+        Checkouts: this.media.Checkouts,
+        Title: this.media.Title,
+        Creator: this.media.Creator,
+        Subjects: this.media.Subjects,
+        Publisher: this.media.Publisher,
+        PublicationYear: this.media.PublicationYear
+      }).then(() => {
+        //to do: redirect
+        router.push("/page/0?name=");
       });
     }
   },
@@ -104,7 +131,8 @@ const addMedia = Vue.component('add-media', {
             </div>
 
             <div class="form-group">
-              <button class="btn btn-info" @click="addMedia"> Add card </button>
+              <button v-if="!$route.query.id" class="btn btn-info" @click="addMedia"> Add card </button>
+              <button v-else class="btn btn-info" @click="editMedia"> Edit card </button>
             </div>
           </div> 
         </div>

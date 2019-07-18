@@ -20,7 +20,10 @@ const getDetailedView = Vue.component('media-detailed', {
           this.$router.push("/");
         });
     },
-    trimTitle: (str) => {
+    editItem: function (id) {
+      this.$router.push("/");
+    },
+    trimTitle: function (str) {
       let arr = [];
       let newStr = '';
 

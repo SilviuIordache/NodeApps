@@ -81,7 +81,8 @@ Vue.component('media-list', {
         :Creator="media.Creator" 
         :Subjects="media.Subjects"  
         :Publisher="media.Publisher" 
-        :PublicationYear="media.PublicationYear"> 
+        :PublicationYear="media.PublicationYear"
+        :key="media._id"> 
       </media>
     </div>
   `

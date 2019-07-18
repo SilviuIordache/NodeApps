@@ -137,30 +137,7 @@ Vue.component('content-and-pagination', {
   `
 });
 
-const filterBar = Vue.component('filter-bar', {
-  props: ['mediaItems'],
-  data: function () {
-    return {
-      ord: 'asc'
-    };
-  },
-  template: `
-  <div class="border-right"> 
-    <div class="sidebar-heading">Filters</div>
-      <div class="btn-group" id="sort-order" role="group" aria-label="Basic example">
-      <button v-bind:disabled='ord === "asc" ? true : false' v-on:click="changeOrder('asc')"  type="button" class="btn btn-secondary">asc</button>
-      <button v-bind:disabled='ord === "desc" ? true : false' v-on:click="changeOrder('desc')" type="button" class="btn btn-secondary">desc</button>
-    </div>
-  </div>
-  `,
-  methods: {
-    changeOrder: function (ord) {
-      // emit event
-      this.ord = ord;
-      this.$parent.$emit('filter-bar:orderChanged', ord);
-    }
-  }
-})
+
 
 const mediaItems = Vue.component('mediaItems', {
   created: function () {
@@ -174,8 +151,9 @@ const mediaItems = Vue.component('mediaItems', {
   },
   mounted: function () {
     //get mediaItems
-    //this.getMediaItems(this.$route.params.page, this.$route.query.name);
-    router.push(`/page/0?name=`);
+    
+    this.getMediaItems(this.$route.params.page, this.$route.query.name);
+
   },
   data: function () {
     return {
@@ -191,7 +169,16 @@ const mediaItems = Vue.component('mediaItems', {
   },
   methods: {
     getMediaItems: function (page, name) {
-      axios(`/media?page=${page || 0}&ord=${this.ord}&elemPerPage=${this.elemPerPage}&name=${name}`)
+      let url = `/media?ord=${this.ord}&elemPerPage=${this.elemPerPage}`;
+
+      if (page) {
+        url += '&page=' + page;
+      }
+
+      if (name) {
+        url += '&name=' + name;
+      }
+      axios(url)
         .then((resp) => {
           this.mediaItems = resp.data;
         });

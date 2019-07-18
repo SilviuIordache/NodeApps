@@ -1,43 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="./style.css" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <title>Media</title>
+  </head>
 
+  <body>
+    <div id="media">
+      <header>
+        <navigation></navigation>
+      </header>
 
-  <link rel="stylesheet" href="./style.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <title>Media</title>
-</head>
+      <main class="content-and-navigation">
+        <router-view></router-view>
+      </main>
 
-<body>
-  <div id="media">
-    <header>
-      <navigation></navigation>    
-    </header>
+      <copyright></copyright>
+    </div>
+  </body>
+  <script src="/components/navbar.js"></script>
+  <script src="/components/copyright.js"></script>
+  <script src="/components/media/filter.js"></script>
+  <script src="/components/mediaStore.js"></script>
+  <script src="/components/mediaForm.js"></script>
+  <script src="/components/mediaDetailed.js"></script>
 
-    <main class="content-and-navigation">
-      <router-view></router-view>
-    </main>
-
-    <copyright></copyright>
-  </div>
-
-</body>
-  <script src='./components/navbar.js'></script>
-  <script src='./components/copyright.js'></script>
-
-  <script src='./components/mediaStore.js'></script>
-  <script src='./components/addNewMedia.js'></script>
-  <script src='./components/mediaDetailed.js'></script>
-
-  <script src='./components/routes.js'></script>
-  <script src='app.js'></script>
+  <script src="/components/routes.js"></script>
+  <script src="app.js"></script>
 </html>

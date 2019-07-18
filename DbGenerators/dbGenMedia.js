@@ -12,22 +12,6 @@ const totalChunks = Math.ceil(limit / chunk);
 let currentLine = 0;
 let results = [];
 
-function trimTitle( str ) {
-  let arr = [];
-  let newStr = '';
-
-  if (str.includes('/')) {
-    arr = str.split(' / ');
-    newStr = arr[0];
-    newStr = newStr.slice(1);
-    if (newStr.includes('[')) {
-      arr = newStr.split(' [');
-      newStr = arr[0];
-    }
-  }
-  return newStr;
-}
-
 function markIfEmpty(str) {
   if (str === '')
     return '-';

@@ -3,8 +3,6 @@ class MediaController {
     this.mediaItems = mediaModel;
   }
 
-
-  // getting item by id (done)
   getMediaById(id, done) {
     this.mediaItems.findById(id, (err, res) => {
       if (err) return console.log(err);
@@ -12,33 +10,31 @@ class MediaController {
     })
   };
 
-  // pagination function (done)
   getMedia(page, name, order, elemPerPage = 15, done) {
     let searchObj = {};
     if (name) {
       searchObj = {$text: { $search: name }}
     }
     this.mediaItems
-      .find( searchObj, 
-      (err, res) => {
-        if (err) return console.log(err);
-        return done(null, res);
-      })
+      .find(searchObj, 
+        (err, res) => {
+          if (err) return console.log(err);
+          return done(null, res);
+        })
       .sort({ '_id': order })
       .skip(page * elemPerPage)
       .limit(elemPerPage);
   };
 
-  // adding an item (done)
   createMedia(media, done) {
     console.log('creating new media item');
-    new this.mediaItems(media).save(function (err) {
+    new this.mediaItems(media)
+    .save(function (err) {
       if (err) return done(err);
       return done(null, 'Item created!');
     });
   }
 
-  // deleting an item (done)
   deleteMediaById(id, done) {
     console.log('deleting media item');
     this.mediaItems.findOneAndDelete(
@@ -49,7 +45,6 @@ class MediaController {
       });
   }
 
-  // modify item (done)
   editMediaItem(id, newValues, done) {
     console.log('editing media item');
     this.mediaItems.findOneAndUpdate(
@@ -59,7 +54,6 @@ class MediaController {
       done
     );
   }
-
 }
 
 module.exports = MediaController;

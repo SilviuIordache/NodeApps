@@ -52,11 +52,11 @@ const mediaItems = Vue.component('mediaItems', {
     return {
       ord: 'asc',
       mediaItems: [],
-      elemPerPage: 5
+      elemPerPage: 9
     };
   },
   beforeRouteUpdate: function (to, from, next) {
-    this.getMediaItems(to.params.page, to.query.name);
+    this.getMediaItems(to.query.page, to.query.name);
     window.scrollTo(0, 0);
     next();
   },

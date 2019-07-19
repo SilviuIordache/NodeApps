@@ -37,9 +37,9 @@ Vue.component('media', {
         </section>
 
         <div class="card-footer text-muted">
-          <a class="nav-item nav-link" :href="'#/media/' +_id">
+          <router-link class="nav-item nav-link" v-bind:to="'/media/' + _id">
             id: {{ _id }}
-          </a>
+          </router-link>
         </div>
 
       </article>

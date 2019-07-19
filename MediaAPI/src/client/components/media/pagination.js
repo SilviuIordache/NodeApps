@@ -4,20 +4,20 @@ Vue.component('pagination-bar', {
   },
   data: function () {
     return {
-      page: 1
+      curPage: 1,
     }
   },
   methods: {
     resetPagination: () => {
-      this.page = 0;
-    }
+      this.curPage = 0;
+    },
   },
   template: `
-    <nav aria-label="Page navigation example">
+    <nav aria-label="pagination-label">
         <ul class="pagination">
           
-          <li v-on:click="page--" class="page-item" 
-          :class="{disabled: parseInt($route.query.page || 0)==0}">
+          <li v-on:click="curPage--" class="page-item" 
+          :class="{disabled: parseInt($route.query.page || 0)<=0}">
             <router-link class="page-link" :to="{ 
               path: '/media', 
               query: { page: parseInt($route.query.page || 0) - 1}}">
@@ -25,13 +25,15 @@ Vue.component('pagination-bar', {
             </router-link>
           </li>
 
-          <li class="page-item">  <div class="page-link">  ... </div> </li>
+          <li class="page-item disabled">  
+            <div class="page-link"> ... </div> 
+          </li>
 
-          <li v-on:click="page--" class="page-item">
+          <li v-on:click="curPage--" class="page-item">
             <router-link class="page-link" :to="{ 
               path: '/media', 
               query: { page : this.page }}">
-                {{ page - 1 }}
+                {{ curPage - 1 }}
             </router-link>
           </li>
 
@@ -39,21 +41,24 @@ Vue.component('pagination-bar', {
             <router-link class="page-link" :to="{ 
               path: '/media', 
               query: { page : this.page }}">
-                {{ page }}
+                {{ curPage }}
             </router-link>
           </li>
 
-          <li v-on:click="page++" class="page-item">
+          <li v-on:click="curPage++" class="page-item">
             <router-link class="page-link" :to="{ 
               path: '/media', 
               query: { page: this.page}}">
-                {{ page + 1 }}
+                {{ curPage + 1 }}
             </router-link>
           </li>
 
-          <li class="page-item">  <div class="page-link">  ... </div>  </li>
+          
+          <li class="page-item disabled">  
+            <div class="page-link">  ... </div>  
+          </li>
 
-          <li v-on:click="page++" class="page-item">
+          <li v-on:click="curPage++" class="page-item">
             <router-link class="page-link" :to="{ 
               path: '/media', 
               query: { page: parseInt($route.query.page || 0) + 1}}">
@@ -74,3 +79,29 @@ Vue.component('pagination-bar', {
               Previous
             </router-link>
           </li> */}
+
+
+{/* <li v-on:click="page--" class="page-item">
+            <router-link class="page-link" :to="{ 
+              path: '/media', 
+              query: { page : this.page }}">
+                {{ curPage - 1 }}
+            </router-link>
+          </li>
+
+          <li class="page-item">
+            <router-link class="page-link" :to="{ 
+              path: '/media', 
+              query: { page : this.page }}">
+                {{ curPage }}
+            </router-link>
+          </li>
+
+          <li v-on:click="page++" class="page-item">
+            <router-link class="page-link" :to="{ 
+              path: '/media', 
+              query: { page: this.page}}">
+                {{ curPage + 1 }}
+            </router-link>
+          </li> */}
+

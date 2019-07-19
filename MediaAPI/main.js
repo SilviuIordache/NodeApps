@@ -9,7 +9,7 @@ mongoose.set('useFindAndModify', false);
 const portNo = 3000;
 
 // import config with media and collection name
-const config = require('./config.js');
+const config = require('../config/config');
 
 // create database connection
 mongoose.connect(

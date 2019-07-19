@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const config = require('../../../config.js');
+const config = require('../../../../config/config.js');
 
-const col = config.collection;
+const col = config.medCol;
 
 const mediaSchema = new Schema({
     UsageClass: String,

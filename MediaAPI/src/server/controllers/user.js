@@ -3,13 +3,6 @@ class UserController {
     this.users = userModel;
   }
 
-  getUserById(id, done) {
-    this.users.findById(id, (err, res) => {
-      if (err) return console.log(err);
-      return done(null, res);
-    })
-  };
-
   getUsers(page, name, order, elemPerPage = 10, done) {
     let searchObj = {};
     if (name) {
@@ -24,6 +17,13 @@ class UserController {
       .sort({ '_id': order })
       .skip(page * elemPerPage)
       .limit(elemPerPage);
+  };
+
+  getUserById(id, done) {
+    this.users.findById(id, (err, res) => {
+      if (err) return console.log(err);
+      return done(null, res);
+    })
   };
 
   createUser(user, done) {

@@ -36,10 +36,7 @@ mediaRoutes.get('/:id', (req, res) => {
   mediaController.getMediaById(
     req.params['id'],
     (err, result) => {
-      if (err) {
-        return console.log(err);
-        //return res.status(500).end();
-      }
+      if (err) throw (err);
       res.json(result);
     }
   )

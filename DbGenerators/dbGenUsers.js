@@ -1,7 +1,7 @@
 const mdbclient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017/';
 const fs = require('fs');
-const config = require('./config.js');
+const config = require('../config/config');
 const USERS_FILE = 'users.json';
 let users = [];
 
@@ -13,11 +13,11 @@ mdbclient.connect(url, {
     if (err) throw err;
 
     //create databse
-    var db = conn.db('testDb');
+    var db = conn.db(config.db);
 
     // create collection
     db.createCollection(
-      'userCollection',
+      config.userCol,
       (err, col) => {
         if (err) {
           conn.close();
@@ -32,7 +32,7 @@ mdbclient.connect(url, {
           console.log(users);
 
           // after reading from file, inser the data in the specified collection
-          db.collection('userCollection').insertMany( users, (err, res) => {
+          db.collection(config.userCol).insertMany( users, (err, res) => {
             if (err) throw err;
             conn.close();
           })

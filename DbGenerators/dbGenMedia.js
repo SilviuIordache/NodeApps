@@ -2,7 +2,7 @@ const fs = require('fs');
 const csv = require('csv-parser');
 const mdbclient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017/';
-const config = require('../MediaFlow/config');
+const config = require('../config/config');
 
 let chunkNo = 0;
 const chunk = 10000;
@@ -21,13 +21,14 @@ function markIfEmpty(str) {
 mdbclient.connect(url, {
   useNewUrlParser: true
 }, (err, conn) => {
+  if (err) throw err;
 
   //create databse
   var db = conn.db(config.db);
 
   // create collection
   db.createCollection(
-    config.collection,
+    config.medCol,
     (err, col) => {
       
       col.createIndex({'$**': 'text'});
@@ -78,9 +79,11 @@ mdbclient.connect(url, {
               if (err) console.error(err);
               chunkNo++;
               console.log(`final chunk: ${chunkNo}/${totalChunks}`);
+              conn.close();
             });
           }
           results = [];
+          conn.close();
         });
     });
 });

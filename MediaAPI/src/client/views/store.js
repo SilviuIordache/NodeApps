@@ -46,31 +46,38 @@ const mediaItems = Vue.component('mediaItems', {
       (ord) => {
         // this.ord gets value from event listener
         this.ord = ord;
-        this.getMediaItems(this.$route.params.page);
+        this.getMediaItems(
+          this.$route.query.page, 
+          null, 
+          this.ord);
       })
   },
   mounted: function () {
     //get mediaItems
-    
-    this.getMediaItems(this.$route.params.page, this.$route.query.name);
-
+    this.getMediaItems(
+      this.$route.query.page,
+      this.$route.query.name);
   },
   beforeRouteUpdate: function (to, from, next) {
-    this.getMediaItems(to.query.page, to.query.name);
+    this.getMediaItems(
+      to.query.page, 
+      to.query.name,
+      to.query.ord);
     window.scrollTo(0, 0);
     next();
   },
   methods: {
-    getMediaItems: function (page, name) {
-      let url = `/media?ord=${this.ord}&elemPerPage=${this.elemPerPage}`;
+    getMediaItems: function (page, name, ord) {
+      let url = `/media?&elemPerPage=${this.elemPerPage}`;
 
-      if (page) {
-        url += '&page=' + page;
+      if (page)  url += '&page=' + page;
+      if (name)  url += '&name=' + name;
+      if (ord) {
+        url += '&ord=' + ord;
+      } else {
+        url +='&ord=asc'
       }
 
-      if (name) {
-        url += '&name=' + name;
-      }
       axios(url)
         .then((resp) => {
           this.mediaItems = resp.data;

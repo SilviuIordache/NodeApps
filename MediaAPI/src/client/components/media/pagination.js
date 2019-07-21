@@ -9,7 +9,8 @@ Vue.component('pagination-bar', {
               class="page-link" 
               :to="{ 
                 path: '/media', 
-                query: { page: parseInt($route.query.page || 0) - 1}}">
+                query: { page: parseInt($route.query.page || 0) - 1,
+                         ord: $route.query.ord}}">
                   Prev
             </router-link>
           </li>
@@ -23,7 +24,8 @@ Vue.component('pagination-bar', {
               class="page-link" 
               :to="{ 
                 path: '/media', 
-                query: { page: parseInt($route.query.page || 0) + 1}}">
+                query: { page: parseInt($route.query.page || 0) + 1,
+                         ord: $route.query.ord}}">
                 Next
             </router-link>
           </li>

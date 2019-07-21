@@ -1,5 +1,4 @@
 const filterBar = Vue.component('filter-bar', {
-  props: ['mediaItems'],
   data: function () {
     return {
       ord: 'asc'
@@ -11,20 +10,27 @@ const filterBar = Vue.component('filter-bar', {
 
       <div class="btn-group" id="sort-order" role="group" aria-label="Basic example">
 
-      <button v-bind:disabled='ord === "asc" ? true : false' 
-              v-on:click="changeOrder('asc')"  
-              type="button" 
-              class="btn btn-secondary">
-        asc
+      <button type="button"
+              class="btn btn-secondary"
+              v-bind:disabled='ord === "asc" ? true : false' 
+              v-on:click="ord ='asc'">
+              <router-link  :to="{  
+                path: '/media', 
+                query: {page: 0, ord: 'asc'}}">
+                ASC
+              </router-link>
       </button>
 
-      <button v-bind:disabled='ord === "desc" ? true : false' 
-              v-on:click="changeOrder('desc')" 
-              type="button" 
-              class="btn btn-secondary">
-        desc
+      <button type="button" 
+              class="btn btn-secondary"
+              v-bind:disabled='ord === "desc" ? true : false' 
+              v-on:click="ord ='desc'">
+            <router-link  :to="{  
+              path: '/media', 
+              query: {page: 0, ord: 'desc'}}">
+              DESC
+            </router-link>
       </button>
-
     </div>
   </div>
   `,

@@ -57,8 +57,8 @@ const mediaForm = Vue.component('add-media', {
           router.push({
             path: '/media',
             query: { 
-              ord: 'desc',
-              page: '0', 
+              page: '0',
+              ord: 'desc'
             }
           });
         });

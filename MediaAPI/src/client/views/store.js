@@ -56,7 +56,8 @@ const mediaItems = Vue.component('mediaItems', {
     //get mediaItems
     this.getMediaItems(
       this.$route.query.page,
-      this.$route.query.name);
+      this.$route.query.name,
+      this.$route.query.ord);
   },
   beforeRouteUpdate: function (to, from, next) {
     this.getMediaItems(
@@ -66,22 +67,18 @@ const mediaItems = Vue.component('mediaItems', {
     window.scrollTo(0, 0);
     next();
   },
-  watch: {
-    // 'this.$router.currentRoute.name': function () {
-    //   getMediaItems(
-    //     this.$route.query.page,
-    //     this.$route.query.name,
-    //     'desc');
-    // }
-  },
   methods: {
     getMediaItems: function (page, name, ord) {
       let url = `/media?&elemPerPage=${this.elemPerPage}`;
 
-      if (page)  url += '&page=' + page;
-      if (name)  url += '&name=' + name;
+      if (page)  {
+        url += '&page=' + page;
+      }
+      if (name)  {
+        url += '&name=' + name;
+      }
       if (ord) {
-        url += '&ord=' + ord;
+        url +='&ord=' + ord;
       } else {
         url +='&ord=asc'
       }

@@ -31,6 +31,10 @@ Vue.component('navigation', {
           Media 
         </a>
 
+        <a class="nav-item nav-link" href="#/publishers/"> 
+          Publishers 
+        </a>
+
         <a class="nav-item nav-link" href="#/media/add"> 
           (+) New 
         </a>

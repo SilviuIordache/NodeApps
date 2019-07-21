@@ -33,6 +33,13 @@ Vue.component('content-and-pagination', {
 });
 
 const mediaItems = Vue.component('mediaItems', {
+  data: function () {
+    return {
+      ord: 'asc',
+      mediaItems: [],
+      elemPerPage: 9
+    };
+  },
   created: function () {
     // change order event listener
     this.$on('filter-bar:orderChanged',
@@ -47,13 +54,6 @@ const mediaItems = Vue.component('mediaItems', {
     
     this.getMediaItems(this.$route.params.page, this.$route.query.name);
 
-  },
-  data: function () {
-    return {
-      ord: 'asc',
-      mediaItems: [],
-      elemPerPage: 9
-    };
   },
   beforeRouteUpdate: function (to, from, next) {
     this.getMediaItems(to.query.page, to.query.name);
@@ -84,7 +84,8 @@ const mediaItems = Vue.component('mediaItems', {
           <filter-bar></filter-bar>
         </div> 
         <div class="col col-md-10">
-          <content-and-pagination :mediaItems='mediaItems'></content-and-pagination>
+          <content-and-pagination :mediaItems='mediaItems'>
+          </content-and-pagination>
         </div> 
       </div> 
     </article>

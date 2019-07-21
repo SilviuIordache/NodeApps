@@ -6,6 +6,8 @@ const mediaForm = Vue.component('add-media', {
   },
   data: function () {
     return {
+      formIsValid: true,
+      formFeedback: 'something',
       media: {
         UsageClass: '',
         CheckoutType: '',
@@ -27,22 +29,33 @@ const mediaForm = Vue.component('add-media', {
           this.media = resp.data;
         })
     },
+    validForm: function () {
+      if (!this.media.Title) {
+        this.formIsValid = false;
+        this.formFeedback = `Please enter a title`;
+        return false;
+      } else {
+        formIsValid = true;
+        return true;
+      }
+    },
     addMedia: function () {
-      axios.post('/media', {
-        UsageClass: this.media.UsageClass,
-        CheckoutType: this.media.CheckoutType,
-        MaterialType: this.media.MaterialType,
-        CheckoutYear: this.media.CheckoutYear,
-        Checkouts: this.media.Checkouts,
-        Title: this.media.Title,
-        Creator: this.media.Creator,
-        Subjects: this.media.Subjects,
-        Publisher: this.media.Publisher,
-        PublicationYear: this.media.PublicationYear
-      }).then(() => {
-        //to do: redirect
-        router.push("/page/0?name=");
-      });
+      if (this.validForm())
+        axios.post('/media', {
+          UsageClass: this.media.UsageClass,
+          CheckoutType: this.media.CheckoutType,
+          MaterialType: this.media.MaterialType,
+          CheckoutYear: this.media.CheckoutYear,
+          Checkouts: this.media.Checkouts,
+          Title: this.media.Title,
+          Creator: this.media.Creator,
+          Subjects: this.media.Subjects,
+          Publisher: this.media.Publisher,
+          PublicationYear: this.media.PublicationYear
+        }).then(() => {
+          //to do: redirect
+          router.push('/media?ord=desc&page=2');
+        });
     },
     editMedia: function () {
       axios.put(`/media?id=${$route.query.id}`, {
@@ -131,9 +144,19 @@ const mediaForm = Vue.component('add-media', {
             </div>
 
             <div class="form-group">
-              <button v-if="!$route.query.id" class="btn btn-info" @click="addMedia"> Add card </button>
-              <button v-else class="btn btn-info" @click="editMedia"> Edit card </button>
+              <label v-if="!formIsValid" for="input-isbn">
+                <p class="text-danger">
+                  {{ formFeedback }}
+                </p>
+              </label>
             </div>
+
+            <div class="form-group">
+              <button class="btn btn-info" @click="addMedia"> 
+                Add Media 
+              </button>
+            </div>
+
           </div> 
         </div>
       </section>`

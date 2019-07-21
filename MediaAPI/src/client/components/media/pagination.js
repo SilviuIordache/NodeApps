@@ -1,7 +1,4 @@
 Vue.component('pagination-bar', {
-  mounted: function() {
-    this.resetPagination();
-  },
   template: `
     <nav aria-label="pagination-label">
         <ul class="pagination">

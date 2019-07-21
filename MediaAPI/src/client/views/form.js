@@ -54,7 +54,13 @@ const mediaForm = Vue.component('add-media', {
           PublicationYear: this.media.PublicationYear
         }).then(() => {
           //to do: redirect
-          router.push('/media?ord=desc&page=2');
+          router.push({
+            path: '/media',
+            query: { 
+              ord: 'desc',
+              page: '0', 
+            }
+          });
         });
     },
     editMedia: function () {

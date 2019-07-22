@@ -21,24 +21,8 @@ Vue.component('media-list', {
   `
 });
 
-Vue.component('content-and-pagination', {
-  props: ['mediaItems', 'pagesPerQuery', 'queryCount'],
-  template: `
-  <div>
-    <pagination-bar :pagesPerQuery = 'pagesPerQuery'
-                    :queryCount = 'queryCount'>
-    </pagination-bar>
 
-    <media-list :mediaItems='mediaItems'> </media-list>
-
-    <pagination-bar :pagesPerQuery = 'pagesPerQuery' 
-                    :queryCount = 'queryCount'>
-    </pagination-bar>
-  </div>
-  `
-});
-
-const mediaItems = Vue.component('mediaItems', {
+const mediaLibrary = Vue.component('media-library', {
   data: function () {
     return {
       ord: 'asc',
@@ -111,15 +95,32 @@ const mediaItems = Vue.component('mediaItems', {
   template: `
     <article class="container">
       <div class="row">
-        <div class="col col-md-2">
-          <filter-bar></filter-bar>
-        </div> 
+        <div class="col col-md-2">  <filter-bar></filter-bar>    </div> 
         <div class="col col-md-10">
-          <content-and-pagination 
-            :mediaItems='mediaItems'
-            :pagesPerQuery = 'pagesPerQuery'
-            :queryCount = 'queryCount'>
-          </content-and-pagination>
+
+          <div class="row">
+
+            <div class="col-4">
+              <media-search></media-search>
+              <pagination-bar :pagesPerQuery = 'pagesPerQuery' :queryCount = 'queryCount'> 
+              </pagination-bar>
+            </div>
+
+            <div class="col-8 ">
+              <router-link v-bind:to="'/media/add'">
+                <button type="button" class="btn btn-primary float-right" >
+                  (+) Add
+                </button>
+              </router-link>   
+            </div>
+
+          </div>
+
+          <media-list :mediaItems='mediaItems'> </media-list>
+
+          <pagination-bar :pagesPerQuery = 'pagesPerQuery'  :queryCount = 'queryCount'> 
+          </pagination-bar>
+
         </div>
       </div> 
     </article>

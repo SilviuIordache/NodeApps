@@ -1,15 +1,15 @@
 const Router = require('express').Router;
 const PublisherController = require('../controllers/publisher');
 let mediaModel = require('../model/media');
-let publisherRouter = new Router();
-
+let publisherRoutes = new Router();
 
 // injecting the publisher model in the controller instance
 const publisherController = new PublisherController(mediaModel);
 
-publisherRouter.get('/:name', (req, res) => {
 
-  publisherController.get(req.params.name,
+publisherRoutes.get('/', (req, res) => {
+  publisherController.get(
+    req.query.name,
     (err, result) => {
       if (err) {
         console.log(err);
@@ -19,4 +19,6 @@ publisherRouter.get('/:name', (req, res) => {
     })
 });
 
-module.exports = publisherRouter;
+
+
+module.exports = publisherRoutes;

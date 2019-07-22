@@ -21,7 +21,6 @@ Vue.component('media-list', {
   `
 });
 
-
 const mediaLibrary = Vue.component('media-library', {
   data: function () {
     return {

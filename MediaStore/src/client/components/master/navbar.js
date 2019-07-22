@@ -9,12 +9,11 @@ Vue.component('navigation', {
       </a>
 
       <div class="nav justify-content-end">
-
         <a class="nav-item nav-link" href="#/media/"> 
           MEDIA 
         </a>
 
-        <a class="nav-item nav-link" href="#/publishers/"> 
+        <a class="nav-item nav-link" href="#/publisher/"> 
           PUBLISHERS 
         </a>
       </div>

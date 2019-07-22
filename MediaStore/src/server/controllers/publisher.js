@@ -26,18 +26,6 @@ class PublisherController {
     ]).exec(done);
   }
 
-  // normal query
-  getPublisherData(name, done) {
-    let queryObj = {};
-    if (name) {
-      queryObj = {'Publisher' : name }
-    }
-    this.model.find( queryObj,  
-      (err, res) => {
-        if (err) throw err;
-        return done(null, res);
-      });
-  }
 }
 
 

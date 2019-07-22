@@ -44,7 +44,7 @@ const mediaItems = Vue.component('mediaItems', {
       ord: 'asc',
       mediaItems: [],
       queryCount: 0,
-      elemPerPage: 9,
+      elemPerPage: 10,
       pagesPerQuery: 0
     };
   },

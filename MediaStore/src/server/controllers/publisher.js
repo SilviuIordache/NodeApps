@@ -13,8 +13,12 @@ class PublisherController {
       }, {
         $group: {
           _id: '$Publisher',
-          publications: {$push: '$_id'},
-          titles: {$push: '$Title'},
+          publications: {
+            $push:  {
+              id: '$_id',
+              title: '$Title'
+            }
+          },
           minYear: {$min: '$PublicationYear'},
           maxYear: {$max: '$PublicationYear'}
         }

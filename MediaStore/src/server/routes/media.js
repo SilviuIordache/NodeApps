@@ -8,6 +8,20 @@ var mediaRoutes = new Router();
 const mediaController = new MediaController(mediaModel);
 
 
+// Get count by name (if any, else return all)
+mediaRoutes.get('/count', (req, res) => {
+  const name = req.query.name;
+  mediaController.getMediaCount(
+    name,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).end();
+      }
+      res.json(result);
+    });
+})
+
 // Search query (with optional name)
 mediaRoutes.get('/', (req, res) => {
   const elemsPerPage = 10;

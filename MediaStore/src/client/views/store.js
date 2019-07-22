@@ -22,12 +22,17 @@ Vue.component('media-list', {
 });
 
 Vue.component('content-and-pagination', {
-  props: ['mediaItems'],
+  props: ['mediaItems', 'pagesPerQuery'],
   template: `
   <div>
-    <pagination-bar></pagination-bar>
-    <media-list :mediaItems='mediaItems'></media-list>
-    <pagination-bar></pagination-bar>
+    <pagination-bar :pagesPerQuery = 'pagesPerQuery'>
+    </pagination-bar>
+
+    <media-list :mediaItems='mediaItems'> </media-list>
+
+    <pagination-bar :pagesPerQuery = 'pagesPerQuery'>
+    </pagination-bar>
+
   </div>
   `
 });
@@ -37,10 +42,18 @@ const mediaItems = Vue.component('mediaItems', {
     return {
       ord: 'asc',
       mediaItems: [],
-      elemPerPage: 9
+      queryCount: 0,
+      elemPerPage: 9,
+      pagesPerQuery: 0
     };
   },
   created: function () {
+    // get all db items in ascending order
+    this.getMediaItems(
+      this.$route.query.page,
+      this.$route.query.name,
+      this.$route.query.ord);
+
     // change order event listener
     this.$on('filter-bar:orderChanged',
       (ord) => {
@@ -52,13 +65,6 @@ const mediaItems = Vue.component('mediaItems', {
           this.ord);
       })
   },
-  mounted: function () {
-    //get mediaItems
-    this.getMediaItems(
-      this.$route.query.page,
-      this.$route.query.name,
-      this.$route.query.ord);
-  },
   beforeRouteUpdate: function (to, from, next) {
     this.getMediaItems(
       to.query.page, 
@@ -69,25 +75,37 @@ const mediaItems = Vue.component('mediaItems', {
   },
   methods: {
     getMediaItems: function (page, name, ord) {
-      let url = `/media?&elemPerPage=${this.elemPerPage}`;
 
-      if (page)  {
-        url += '&page=' + page;
-      }
-      if (name)  {
-        url += '&name=' + name;
-      }
+      // calculate total pages, then in the callback, the elements per page;
+      this.getMediaCount(name, () => {
+        this.calcPagesPerQuery(this.queryCount, this.elemPerPage); 
+      });
+        
+      let url = `/media?&elemPerPage=${this.elemPerPage}`;
+      if (page)  url += '&page=' + page;
+      if (name)  url += '&name=' + name;
       if (ord) {
         url +='&ord=' + ord;
       } else {
         url +='&ord=asc'
       }
-
       axios(url)
         .then((resp) => {
           this.mediaItems = resp.data;
         });
     },
+    getMediaCount: function (name, done) {
+      let url = `media/count?`;
+      if (name) url += `&name=` + name;
+      axios(url)
+        .then( (resp) => {
+          this.queryCount = resp.data;
+          done();
+        })
+    },
+    calcPagesPerQuery: function( qCount, elPerPag) {
+      this.pagesPerQuery = parseInt(qCount / elPerPag);
+    }
   },
   template: `
     <article class="container">
@@ -96,9 +114,11 @@ const mediaItems = Vue.component('mediaItems', {
           <filter-bar></filter-bar>
         </div> 
         <div class="col col-md-10">
-          <content-and-pagination :mediaItems='mediaItems'>
+          <content-and-pagination 
+            :mediaItems='mediaItems'
+            :pagesPerQuery = 'pagesPerQuery'>
           </content-and-pagination>
-        </div> 
+        </div>
       </div> 
     </article>
   `

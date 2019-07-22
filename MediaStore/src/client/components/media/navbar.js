@@ -7,7 +7,12 @@ Vue.component('navigation', {
   },
   methods: {  
     searchStart: function () {
-        router.push(`/media/page/0?name=${this.searchData}`);
+        router.push({
+          path: '/media',
+          query: {
+            name: this.searchData
+          }
+        });
     }
   },
   template: `

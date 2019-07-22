@@ -22,17 +22,18 @@ Vue.component('media-list', {
 });
 
 Vue.component('content-and-pagination', {
-  props: ['mediaItems', 'pagesPerQuery'],
+  props: ['mediaItems', 'pagesPerQuery', 'queryCount'],
   template: `
   <div>
-    <pagination-bar :pagesPerQuery = 'pagesPerQuery'>
+    <pagination-bar :pagesPerQuery = 'pagesPerQuery'
+                    :queryCount = 'queryCount'>
     </pagination-bar>
 
     <media-list :mediaItems='mediaItems'> </media-list>
 
-    <pagination-bar :pagesPerQuery = 'pagesPerQuery'>
+    <pagination-bar :pagesPerQuery = 'pagesPerQuery' 
+                    :queryCount = 'queryCount'>
     </pagination-bar>
-
   </div>
   `
 });
@@ -116,7 +117,8 @@ const mediaItems = Vue.component('mediaItems', {
         <div class="col col-md-10">
           <content-and-pagination 
             :mediaItems='mediaItems'
-            :pagesPerQuery = 'pagesPerQuery'>
+            :pagesPerQuery = 'pagesPerQuery'
+            :queryCount = 'queryCount'>
           </content-and-pagination>
         </div>
       </div> 

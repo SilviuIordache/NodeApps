@@ -1,5 +1,5 @@
 Vue.component('pagination-bar', {
-  props: ['pagesPerQuery'],
+  props: ['pagesPerQuery', 'queryCount'],
   template: `
     <nav aria-label="pagination-label">
         <ul class="pagination">
@@ -36,6 +36,8 @@ Vue.component('pagination-bar', {
           </li>
 
         </ul>
+
+        <div> {{ queryCount }} results </div>
       </nav>
     `
 });

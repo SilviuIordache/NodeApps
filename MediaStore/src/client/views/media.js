@@ -37,9 +37,9 @@ const mediaLibrary = Vue.component('media-library', {
   methods: {
     getMediaItems: function (page, name, ord) {
 
-      // calculate total pages, then in the callback, the elements per page;
+      // calculate total count, then, the pages per query
       this.getMediaCount(name, () => {
-        this.calcPagesPerQuery(this.queryCount, this.elemPerPage); 
+        this.pagesPerQuery = parseInt(this.queryCount/this.elemPerPage)
       });
         
       let url = `/media?&elemPerPage=${this.elemPerPage}`;
@@ -64,9 +64,6 @@ const mediaLibrary = Vue.component('media-library', {
           done();
         })
     },
-    calcPagesPerQuery: function( qCount, elPerPag) {
-      this.pagesPerQuery = parseInt(qCount / elPerPag);
-    }
   },
   template: `
     <article class="container">
@@ -79,13 +76,14 @@ const mediaLibrary = Vue.component('media-library', {
             <div class="col-4">
               <search :redirPath="'/media'"> </search>
               <pagination-bar :pagesPerQuery = 'pagesPerQuery' 
-                              :queryCount = 'queryCount'> 
+                              :queryCount = 'queryCount'
+                              :searchPath= "'/media'"> 
               </pagination-bar>
             </div>
 
             <div class="col-8 ">
               <router-link v-bind:to="'/media/add'">
-                <button type="button" class="btn btn-primary float-right" >
+                <button type="button" class="btn btn-primary float-right">
                   (+) Add
                 </button>
               </router-link>   
@@ -96,7 +94,8 @@ const mediaLibrary = Vue.component('media-library', {
           <media-list :mediaItems='mediaItems'> </media-list>
 
           <pagination-bar :pagesPerQuery = 'pagesPerQuery'  
-                          :queryCount = 'queryCount'> 
+                          :queryCount = 'queryCount'
+                          :searchPath= "'/media'"> 
           </pagination-bar>
 
         </div>

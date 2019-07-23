@@ -28,24 +28,32 @@ class PublisherController {
     }, ]).exec(done);
   }
 
-  getTopPublishers(limitNo, done) {
+  getTopPublishers(page, elemPerPage = 15, done) {
     this.model.aggregate([{
-      $group : { 
-        _id: '$Publisher',
-        pubName: { $first: '$Publisher' },
-        count : { $sum : 1 },
-        minYear: {
-          $min: '$PublicationYear'
+        $group: {
+          _id: '$Publisher',
+          pubName: {  $first: '$Publisher' },
+          count:   {  $sum: 1 },
+          minYear: {  $min: '$PublicationYear'},
+          maxYear: {  $max: '$PublicationYear'}
         },
-        maxYear: {
-          $max: '$PublicationYear'
-        }
-       },
-    },
-    { $sort: { count: -1}},
-    { $limit : limitNo }
-  ]).exec(done);
-  } 
+      },
+      { $sort: { count: -1 } },
+      { $skip: page * elemPerPage  },
+      { $limit: elemPerPage }
+    ]).exec(done);
+  }
+
+  getPublisherCount(done) {
+    this.model.aggregate([{
+      $group: {  _id: '$Publisher' }
+    }, {
+      $group: {  
+        _id: 1,
+        count: { $sum: 1 }
+      }
+    }]).exec(done);
+  }
 }
 
 

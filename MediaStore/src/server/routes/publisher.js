@@ -20,15 +20,26 @@ publisherRoutes.get('/', (req, res) => {
 });
 
 publisherRoutes.get('/top', (req, res) => {
-  const pubNo = req.query.limit || 10;
+
+  const page = req.query.page || 0;
+  const elemPerPage = parseInt(req.query.elemPerPage) || 10;
 
   publisherController.getTopPublishers(
-    pubNo, 
+    page,
+    elemPerPage, 
     (err, result) => {
       if (err) throw err;
       res.json(result);
     }
   ) 
+})
+
+publisherRoutes.get('/count', (req, res) => {
+  publisherController.getPublisherCount( 
+    (err, result) => {
+      if (err) throw (err)
+      res.json(result);
+    })
 })
 
 module.exports = publisherRoutes;

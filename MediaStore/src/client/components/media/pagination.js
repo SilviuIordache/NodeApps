@@ -1,5 +1,5 @@
 Vue.component('pagination-bar', {
-  props: ['pagesPerQuery', 'queryCount'],
+  props: ['pagesPerQuery', 'queryCount', 'searchPath'],
   template: `
     <nav aria-label="pagination-label">
         <ul class="pagination">
@@ -8,7 +8,7 @@ Vue.component('pagination-bar', {
           :class="{disabled: parseInt($route.query.page || 0)<=0}">
 
             <router-link class="page-link" 
-              :to="{ path: '/media', query: { 
+              :to="{ path: searchPath, query: { 
                         page: parseInt($route.query.page || 0) - 1,
                         ord: $route.query.ord,
                         name: $route.query.name}}">
@@ -24,7 +24,7 @@ Vue.component('pagination-bar', {
 
           <li  class="page-item" :class="{disabled: parseInt($route.query.page) === pagesPerQuery}">
             <router-link  class="page-link" 
-              :to="{ path: '/media', query: { 
+              :to="{ path: searchPath, query: { 
                       page: parseInt($route.query.page || 0) + 1,
                       ord: $route.query.ord,
                       name: $route.query.name}}">

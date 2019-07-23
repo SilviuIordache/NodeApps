@@ -24,11 +24,10 @@ mediaRoutes.get('/count', (req, res) => {
 
 // Search query (with optional name)
 mediaRoutes.get('/', (req, res) => {
-  const elemsPerPage = 10;
   const page = req.query.page || 0;
   const name = req.query.name;
   const ord = req.query.ord;
-  const elemPerPage = parseInt(req.query['elemPerPage']) || elemsPerPage;
+  const elemPerPage = parseInt(req.query['elemPerPage']) || 10;
   let ordParam = (ord === 'asc' ? 1 : -1)
 
   mediaController.getMedia(

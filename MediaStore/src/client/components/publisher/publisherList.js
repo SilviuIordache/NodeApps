@@ -7,7 +7,6 @@ Vue.component('publisher-list', {
         <tr>
           <th scope="col">#</th>
           <th scope="col">name</th>
-          <th scope="col">type</th>
           <th scope="col">publications</th>
           <th scope="col">first</th>
           <th scope="col">last</th>
@@ -18,11 +17,9 @@ Vue.component('publisher-list', {
         <tr v-for="(publisher, index) in publishers"
           :index = "index"
           :_id = "publisher._id"
-          :mediaType = "publisher.mediaType"
           :key= "publisher._id">
             <th scope="row"> {{ index }}</th>
             <td> {{ publisher._id }} </td>
-            <td> {{ publisher.mediaType }} </td>
             <td> {{ publisher.count }} </td>
             <td> {{ publisher.minYear }} </td>
             <td> {{ publisher.maxYear }} </td>

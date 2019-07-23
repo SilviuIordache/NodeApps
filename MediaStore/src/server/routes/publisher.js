@@ -20,7 +20,7 @@ publisherRoutes.get('/', (req, res) => {
 });
 
 publisherRoutes.get('/top', (req, res) => {
-  const pubNo = 10;
+  const pubNo = req.query.limit || 10;
 
   publisherController.getTopPublishers(
     pubNo, 
@@ -30,8 +30,5 @@ publisherRoutes.get('/top', (req, res) => {
     }
   ) 
 })
-
-
-
 
 module.exports = publisherRoutes;

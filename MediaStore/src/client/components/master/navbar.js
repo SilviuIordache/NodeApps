@@ -13,7 +13,7 @@ Vue.component('navigation', {
           MEDIA 
         </a>
 
-        <a class="nav-item nav-link" href="#/publisher/"> 
+        <a class="nav-item nav-link" href="#/publisher/top"> 
           PUBLISHERS 
         </a>
       </div>

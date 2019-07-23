@@ -31,9 +31,15 @@ class PublisherController {
   getTopPublishers(limitNo, done) {
     this.model.aggregate([{
       $group : { 
-        _id: '$Publisher', 
-        count : {$sum : 1}
-       }
+        _id: '$Publisher',
+        count : {$sum : 1},
+        minYear: {
+          $min: '$PublicationYear'
+        },
+        maxYear: {
+          $max: '$PublicationYear'
+        }
+       },
     },
     { $sort: { count: -1}},
     { $limit : limitNo }

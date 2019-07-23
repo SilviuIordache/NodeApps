@@ -73,7 +73,7 @@ const mediaLibrary = Vue.component('media-library', {
 
           <div class="row">
 
-            <div class="col-4">
+            <div class="col-6">
               <search :redirPath="'/media'"> </search>
               <pagination-bar :pagesPerQuery = 'pagesPerQuery' 
                               :queryCount = 'queryCount'
@@ -81,7 +81,7 @@ const mediaLibrary = Vue.component('media-library', {
               </pagination-bar>
             </div>
 
-            <div class="col-8 ">
+            <div class="col-6 ">
               <router-link v-bind:to="'/media/add'">
                 <button type="button" class="btn btn-primary float-right">
                   (+) Add

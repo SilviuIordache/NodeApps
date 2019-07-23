@@ -4,6 +4,14 @@ const topPublishersView = Vue.component('topPublishersView', {
       publishers: []
     }
   },
+  computed: {
+    validPublishers: function() {
+      //we filter out the publisher named '-' (entries with no publisher)
+        return this.publishers.filter( (pub) => {
+          if (pub.pubName != '-') return pub;
+        })
+    }
+  },
   created: function () {
     this.getTopPublishers();
   },
@@ -20,7 +28,7 @@ const topPublishersView = Vue.component('topPublishersView', {
   template: `
   <article class="container">
     <div class="row">
-      <publisher-list :publishers="publishers"></publisher-list>
+      <publisher-list :publishers="validPublishers"></publisher-list>
     </div> 
   </article>
   `

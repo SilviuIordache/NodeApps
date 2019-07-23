@@ -16,10 +16,9 @@ Vue.component('publisher-list', {
       <tbody>
         <tr v-for="(publisher, index) in publishers"
           :index = "index"
-          :_id = "publisher._id"
           :key= "publisher._id">
             <th scope="row"> {{ index }}</th>
-            <td> {{ publisher._id }} </td>
+            <td> {{ publisher.pubName }} </td>
             <td> {{ publisher.count }} </td>
             <td> {{ publisher.minYear }} </td>
             <td> {{ publisher.maxYear }} </td>

@@ -32,7 +32,8 @@ class PublisherController {
     this.model.aggregate([{
       $group : { 
         _id: '$Publisher',
-        count : {$sum : 1},
+        pubName: { $first: '$Publisher' },
+        count : { $sum : 1 },
         minYear: {
           $min: '$PublicationYear'
         },

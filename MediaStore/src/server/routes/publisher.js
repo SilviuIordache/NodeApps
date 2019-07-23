@@ -19,6 +19,19 @@ publisherRoutes.get('/', (req, res) => {
     })
 });
 
+publisherRoutes.get('/top', (req, res) => {
+  const pubNo = 10;
+
+  publisherController.getTopPublishers(
+    pubNo, 
+    (err, result) => {
+      if (err) throw err;
+      res.json(result);
+    }
+  ) 
+})
+
+
 
 
 module.exports = publisherRoutes;

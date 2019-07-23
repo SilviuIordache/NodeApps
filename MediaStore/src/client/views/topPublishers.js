@@ -27,8 +27,13 @@ const topPublishersView = Vue.component('topPublishersView', {
   },
   template: `
   <article class="container">
-    <div class="row">
-      <publisher-list :publishers="validPublishers"></publisher-list>
+    <div class="col">
+      <div class="row">
+        <search></search>
+      </div>
+      <div class="row">
+        <publisher-list :publishers="validPublishers"></publisher-list>
+      </div>
     </div> 
   </article>
   `

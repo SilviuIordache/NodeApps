@@ -18,7 +18,17 @@ Vue.component('publisher-list', {
           :index = "index"
           :key= "publisher._id">
             <th scope="row"> {{ index }}</th>
-            <td> {{ publisher.pubName }} </td>
+            <td> 
+              <router-link class="nav-item nav-link" :to="{ 
+                path: '/publisher',
+                query: {
+                  name: publisher.pubName 
+                }
+              }">
+                {{ publisher.pubName }} 
+              </router-link>
+
+            </td>
             <td> {{ publisher.count }} </td>
             <td> {{ publisher.minYear }} </td>
             <td> {{ publisher.maxYear }} </td>

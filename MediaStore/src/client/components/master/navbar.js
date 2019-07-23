@@ -9,13 +9,19 @@ Vue.component('navigation', {
       </a>
 
       <div class="nav justify-content-end">
-        <a class="nav-item nav-link" href="#/media/"> 
-          MEDIA 
-        </a>
 
-        <a class="nav-item nav-link" href="#/publisher/top"> 
-          PUBLISHERS 
-        </a>
+        <router-link class="nav-item" :to="{ path: '/media'}">
+          <a class="nav-link">  MEDIA  </a>
+        </router-link>
+
+        <router-link class="nav-item" :to="{ path: '/publisher/top'}">
+          <a class="nav-link">  PUBLISHERS  </a>
+        </router-link>
+
+        <router-link class="nav-item" :to="{ path: '/author'}">
+          <a class="nav-link"">  AUTHOR  </a>
+        </router-link>
+
       </div>
     </nav>
     `

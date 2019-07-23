@@ -5,7 +5,7 @@ const publishersView = Vue.component('publishersView', {
     }
   },
   created: function () {
-    this.getPublisherEntries('Sesame Workshop,');
+    this.getPublisherEntries(this.$route.query.name);
   },
   beforeRouteUpdate: function (to, from, next) {
     this.getPublisherEntries(to.query.name);

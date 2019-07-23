@@ -78,7 +78,8 @@ const mediaLibrary = Vue.component('media-library', {
 
             <div class="col-4">
               <search :redirPath="'/media'"> </search>
-              <pagination-bar :pagesPerQuery = 'pagesPerQuery' :queryCount = 'queryCount'> 
+              <pagination-bar :pagesPerQuery = 'pagesPerQuery' 
+                              :queryCount = 'queryCount'> 
               </pagination-bar>
             </div>
 
@@ -94,7 +95,8 @@ const mediaLibrary = Vue.component('media-library', {
 
           <media-list :mediaItems='mediaItems'> </media-list>
 
-          <pagination-bar :pagesPerQuery = 'pagesPerQuery'  :queryCount = 'queryCount'> 
+          <pagination-bar :pagesPerQuery = 'pagesPerQuery'  
+                          :queryCount = 'queryCount'> 
           </pagination-bar>
 
         </div>

@@ -37,7 +37,6 @@ const topPublishersView = Vue.component('topPublishersView', {
       })
     },
     getPublisherCount: function (done) {
-
       let url = `/publisher/count`;
       axios(url)
         .then( (res) => {

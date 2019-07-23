@@ -1,4 +1,5 @@
-Vue.component('media-search', {
+Vue.component('search', {
+  props: ['redirPath'],
   data: function (){
     return {
       searchData: ''
@@ -7,7 +8,7 @@ Vue.component('media-search', {
   methods: {  
     searchStart: function () {
         router.push({
-          path: '/media',
+          path: this.redirPath,
           query: {
             name: this.searchData
           }
@@ -16,7 +17,7 @@ Vue.component('media-search', {
   },
   template: 
   `
-  <div @keyup.enter="searchStart()" class="search-bar mb-3">
+  <div @keyup.enter="searchStart" class="search-bar mb-3">
     <input class="form-control" 
             type="text" 
             placeholder="Search" 

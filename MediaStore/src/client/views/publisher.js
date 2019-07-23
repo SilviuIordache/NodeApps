@@ -1,56 +1,56 @@
-Vue.component('entry-table', {
+const publishersView = Vue.component('publishersView', {
   data: function () {
     return {
       entries: []
     }
   },
-  created: function(){
-    this.getPublisherEntries(this.$route.query.name);
+  created: function () {
+    this.getPublisherEntries('Sesame Workshop,');
+  },
+  beforeRouteUpdate: function (to, from, next) {
+    this.getPublisherEntries(to.query.name);
+    window.scrollTo(0, 0);
+    next();
   },
   methods: {
-    getPublisherEntries: function(name) {
+    getPublisherEntries: function (name) {
       let url = '/publisher?';
+      if (name)   url += 'name=' + name; 
 
-      if (name) {
-        url += 'name=' + name;
-      }
       axios(url)
-        .then ( (res) => {
-          this.entries = res.data;
-      });
+        .then((res) => {
+          //grabbing what I need from the res obj
+          if (res.data.length > 0) {
+            this.entries = res.data[0].publications;
+          } else {
+            this.entries = [{id: '-', title: 'no results'}];
+          }
+        });
     }
   },
   template: `
-    <table class="table">
-    <thead class="thead-dark">
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">id</th>
-        <th scope="col">Title</th>
-      </tr>
-    </thead>
-    <tbody>
-      <entry v-for="entry in entries"
-        :id = "entry.id"
-        :title = "entry.title"
-        :key= "entry.id">
-      </entry>
-    </tbody>
-  </table>
-  `
-})
+    <article class="container">
+      <div class="row">
 
-const publishersView = Vue.component('publishersView', {
-  template: `
-  <article class="container">
-    <div class="row">
-      <div class="col col-md-2">
-        <filter-bar></filter-bar>
+        <div class="col col-md-2">
+          <filter-bar></filter-bar>
+        </div> 
+
+        <div class="col col-md-10">
+          <div class="col">
+
+            <div class="row">
+              <search :redirPath="'/publisher'"> </search>
+            </div>
+
+            <div class="row">
+              <entry-list :entries='entries'></entry-list>
+            </div>
+
+          </div>
+        </div> 
+
       </div> 
-      <div class="col col-md-10">
-        <entry-table></entry-table>
-      </div> 
-    </div> 
-  </article>
+    </article>
   `
 })

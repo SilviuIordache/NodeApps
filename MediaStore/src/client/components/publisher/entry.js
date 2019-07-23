@@ -1,8 +1,8 @@
 Vue.component('entry', {
-  props: ['id', 'title'],
+  props: ['id', 'title', 'index'],
   template: `
     <tr>
-      <th scope="row">1</th>
+      <th scope="row"> {{ index }}</th>
       <td> {{ id }} </td>
       <td> {{ title }} </td>
     </tr>

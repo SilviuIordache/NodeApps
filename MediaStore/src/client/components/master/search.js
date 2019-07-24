@@ -15,10 +15,8 @@ Vue.component('search', {
         });
     }
   },
-  template: 
-  `
+  template:   `
   <div class = "row">
-
     <div class="search-bar mb-3 col-6" @keyup.enter="searchStart" >
       <input class="form-control" 
             type="text" 
@@ -27,6 +25,5 @@ Vue.component('search', {
             v-model="searchData">
     </div>
   </div>
- 
   `
 })

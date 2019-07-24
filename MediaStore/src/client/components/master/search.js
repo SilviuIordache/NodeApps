@@ -17,12 +17,16 @@ Vue.component('search', {
   },
   template: 
   `
-  <div @keyup.enter="searchStart" class="search-bar mb-3">
-    <input class="form-control" 
+  <div class = "row">
+
+    <div class="search-bar mb-3 col" @keyup.enter="searchStart" >
+      <input class="form-control" 
             type="text" 
             placeholder="Search" 
             aria-label="Search" 
             v-model="searchData">
+    </div>
   </div>
+ 
   `
 })

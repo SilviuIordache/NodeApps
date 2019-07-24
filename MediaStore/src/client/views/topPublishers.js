@@ -44,7 +44,6 @@ const topPublishersView = Vue.component('topPublishersView', {
           done();
         })
     },
-
   },
   template: `
   <article class="container">

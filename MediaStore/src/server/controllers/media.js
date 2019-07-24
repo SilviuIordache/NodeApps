@@ -10,10 +10,12 @@ class MediaController {
     })
   };
 
-  getMedia(page, name, order, elemPerPage = 15, done) {
+  getMedia(page, field, name, order, elemPerPage = 15, done) {
     let searchObj = {};
+
     if (name) {
-      searchObj = {$text: { $search: name }}
+      if (field) searchObj = {[field]: name }
+      else searchObj = {$text: { $search: name }}
     }
     this.mediaItems
       .find(searchObj, 

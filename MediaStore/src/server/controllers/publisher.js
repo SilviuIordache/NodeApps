@@ -56,6 +56,4 @@ class PublisherController {
   }
 }
 
-
-
 module.exports = PublisherController;

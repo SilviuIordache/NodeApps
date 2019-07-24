@@ -1,4 +1,4 @@
-const mediaLibrary = Vue.component('media-library', {
+  const mediaLibrary = Vue.component('media-library', {
   data: function () {
     return {
       ord: 'asc',
@@ -10,59 +10,43 @@ const mediaLibrary = Vue.component('media-library', {
   },
   created: function () {
     // get all db items in ascending order
-    this.getMediaItems(
-      this.$route.query.page,
-      this.$route.query.name,
-      this.$route.query.ord);
+    this.getMediaItems(this.$route.query);
 
     // change order event listener
     this.$on('filter-bar:orderChanged',
       (ord) => {
         // this.ord gets value from event listener
         this.ord = ord;
-        this.getMediaItems(
-          this.$route.query.page, 
-          null, 
-          this.ord);
+        this.getMediaItems(this.$route.query);
       })
   },
   beforeRouteUpdate: function (to, from, next) {
-    this.getMediaItems(
-      to.query.page, 
-      to.query.name,
-      to.query.ord);
+    this.getMediaItems(to.query);
     window.scrollTo(0, 0);
     next();
   },
   methods: {
-    getMediaItems: function (page, name, ord) {
-
-      // calculate total count, then, the pages per query
-      this.getMediaCount(name, () => {
-        this.pagesPerQuery = parseInt(this.queryCount/this.elemPerPage)
-      });
-        
+    getMediaItems: function (query) {
       let url = `/media?&elemPerPage=${this.elemPerPage}`;
-      if (page)  url += '&page=' + page;
-      if (name)  url += '&name=' + name;
-      if (ord) {
-        url +='&ord=' + ord;
+
+      if (query.page)  url += '&page=' + query.page;
+      if (query.name)  {
+        url += '&name=' + query.name;
+        if(query.field)
+          url += '&field=' + query.field;
+      }
+      if (query.ord) {
+        url +='&ord=' + query.ord;
       } else {
         url +='&ord=asc'
       }
       axios(url)
         .then((resp) => {
-          this.mediaItems = resp.data;
+          this.mediaItems = resp.data.items;
+          this.queryCount = resp.data.count;
+
+          this.pagesPerQuery = parseInt(this.queryCount/this.elemPerPage)
         });
-    },
-    getMediaCount: function (name, done) {
-      let url = `media/count?`;
-      if (name) url += `&name=` + name;
-      axios(url)
-        .then( (resp) => {
-          this.queryCount = resp.data;
-          done();
-        })
     },
   },
   template: `

@@ -21,8 +21,9 @@ Vue.component('publisher-list', {
 
             <td> 
               <router-link class="nav-item nav-link" :to="{ 
-                path: '/publisher',
+                path: '/media',
                 query: {
+                  field: 'Publisher',
                   name: publisher.pubName 
               }}">
                 {{ publisher.pubName }} 

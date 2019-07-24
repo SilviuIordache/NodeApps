@@ -11,7 +11,7 @@ Vue.component('pagination-bar', {
                 page: 0,
                 ord: $route.query.ord,
                 name: $route.query.name}}"> 
-              <div> <<< </div>
+              <div> < </div>
             </router-link>
           </li>
 
@@ -57,7 +57,7 @@ Vue.component('pagination-bar', {
                 page: pagesPerQuery,
                 ord: $route.query.ord,
                 name: $route.query.name }}"> 
-              <div> >>> </div>
+              <div> > </div>
             </router-link>
           </li>
 

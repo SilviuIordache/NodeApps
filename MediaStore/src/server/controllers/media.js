@@ -5,8 +5,8 @@ class MediaController {
 
   getMediaById(id, done) {
     this.mediaItems.findById(id, (err, res) => {
-      if (err) return console.log(err);
-      return done(null, res);
+      if (err) return done(err);
+      done(null, res);
     })
   };
 
@@ -19,9 +19,14 @@ class MediaController {
     }
     this.mediaItems
       .find(searchObj, 
-        (err, res) => {
+        (err, items) => {
           if (err) return console.log(err);
-          return done(null, res);
+          this.mediaItems
+          .countDocuments(searchObj,
+            (err, count) => {
+              if (err) return done(err);
+              done(null, { items, count });
+            })
         })
       .sort({ '_id': order })
       .skip(page * elemPerPage)
@@ -37,8 +42,8 @@ class MediaController {
     this.mediaItems
       .countDocuments(searchObj,
         (err, res) => {
-          if (err) throw err;
-          return done(null, res);
+          if (err) return done(err);
+          done(null, res);
         })
   }
 
@@ -47,7 +52,7 @@ class MediaController {
     new this.mediaItems(media)
     .save(function (err) {
       if (err) return done(err);
-      return done(null, 'Item created!');
+      done(null, 'Item created!');
     });
   }
 
@@ -56,8 +61,8 @@ class MediaController {
     this.mediaItems.findOneAndDelete(
       { _id: id },
       (err, res) => {
-        if (err) return console.log(err);
-        return done(null, res);
+        if (err) return done(err);
+        done(null, res);
       });
   }
 

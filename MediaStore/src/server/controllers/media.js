@@ -33,20 +33,6 @@ class MediaController {
       .limit(elemPerPage);
   };
 
-  getMediaCount(name, done) {
-    let searchObj = {}
-    if (name) {
-      searchObj = {$text: {$search: name}}
-    }
-
-    this.mediaItems
-      .countDocuments(searchObj,
-        (err, res) => {
-          if (err) return done(err);
-          done(null, res);
-        })
-  }
-
   createMedia(media, done) {
     console.log('creating new media item');
     new this.mediaItems(media)

@@ -40,20 +40,33 @@ class PublisherController {
       },
       { $sort: { count: -1 } },
       { $skip: page * elemPerPage  },
-      { $limit: elemPerPage }
-    ]).exec(done);
+      { $limit: elemPerPage },
+    ])
+    .exec((err, items) => {
+      if (err) return console.log(err);
+      this.model.aggregate([
+        { $group: {  _id: '$Publisher' }}, 
+        { $group: { _id: 1,  count: { $sum: 1 }}}
+      ])
+    .exec((err, count) => {
+        if (err) return console.log(err);
+        done(null, { items, count });
+      });
+    });
   }
 
-  getPublisherCount(done) {
-    this.model.aggregate([{
-      $group: {  _id: '$Publisher' }
-    }, {
-      $group: {  
-        _id: 1,
-        count: { $sum: 1 }
-      }
-    }]).exec(done);
+  findTopPublishers(err, items) {
+      if (err) return console.log(err);
+      this.model.aggregate([
+        { $group: {  _id: '$Publisher' }}, 
+        { $group: { _id: 1,  count: { $sum: 1 }}}
+      ])
   }
+
+  countTopPublishers() {
+
+  }
+
 }
 
 module.exports = PublisherController;

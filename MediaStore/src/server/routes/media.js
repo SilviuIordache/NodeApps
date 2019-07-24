@@ -3,24 +3,8 @@ const MediaController = require('../controllers/media');
 let mediaModel = require('../model/media');
 var mediaRoutes = new Router();
 
-
 // injecting the media model in the controller instance
 const mediaController = new MediaController(mediaModel);
-
-
-// Get count by name (if any, else return all)
-mediaRoutes.get('/count', (req, res) => {
-  const name = req.query.name;
-  mediaController.getMediaCount(
-    name,
-    (err, result) => {
-      if (err) {
-        console.log(err);
-        return res.status(500).end();
-      }
-      res.json(result);
-    });
-})
 
 // Search query (with optional name)
 mediaRoutes.get('/', (req, res) => {

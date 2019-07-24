@@ -16,33 +16,22 @@ const topPublishersView = Vue.component('topPublishersView', {
     }
   },
   created: function () {
-    this.getTopPublishers();
+    this.getTopPublishers(this.$route.query);
   },
   beforeRouteUpdate: function (to, from, next) {
-    this.getTopPublishers(to.query.page);
+    this.getTopPublishers(to.query);
     next();
   },
   methods: {
-    getTopPublishers: function (page) {
-
-      this.getPublisherCount( () => {
-        this.pagesPerQuery = this.publisherCount/this.elemPerPage;
-      })
-
+    getTopPublishers: function (query) {
       let url = `/publisher/top?elemPerPage=${this.elemPerPage}`;
-      if (page)  url += '&page=' + page;
+      if (query.page)  url += '&page=' + query.page;
       axios(url)
       .then((res) => {
-        this.publishers = res.data;
+        this.publishers = res.data.items;
+        this.publisherCount = res.data.count[0].count;
+        this.pagesPerQuery = parseInt(this.publisherCount/this.elemPerPage);
       })
-    },
-    getPublisherCount: function (done) {
-      let url = `/publisher/count`;
-      axios(url)
-        .then( (res) => {
-          this.publisherCount = res.data[0].count;
-          done();
-        })
     },
   },
   template: `

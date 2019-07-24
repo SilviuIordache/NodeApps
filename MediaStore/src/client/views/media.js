@@ -41,10 +41,9 @@
         url +='&ord=asc'
       }
       axios(url)
-        .then((resp) => {
-          this.mediaItems = resp.data.items;
-          this.queryCount = resp.data.count;
-
+        .then((res) => {
+          this.mediaItems = res.data.items;
+          this.queryCount = res.data.count;
           this.pagesPerQuery = parseInt(this.queryCount/this.elemPerPage)
         });
     },

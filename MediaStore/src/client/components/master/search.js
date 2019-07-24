@@ -19,7 +19,7 @@ Vue.component('search', {
   `
   <div class = "row">
 
-    <div class="search-bar mb-3 col" @keyup.enter="searchStart" >
+    <div class="search-bar mb-3 col-6" @keyup.enter="searchStart" >
       <input class="form-control" 
             type="text" 
             placeholder="Search" 

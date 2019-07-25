@@ -23,12 +23,14 @@ publisherRoutes.get('/top', (req, res) => {
 
   const page = req.query.page || 0;
   const elemPerPage = parseInt(req.query.elemPerPage) || 10;
+  const name = req.query.name;
 
   publisherController.getTopPublishers(
     page,
+    name,
     elemPerPage, 
     (err, result) => {
-      if (err) throw err;
+      if (err) return res.status(500).json(err);
       res.json(result);
     }
   ) 

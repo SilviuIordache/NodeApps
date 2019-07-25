@@ -24,12 +24,16 @@ const topPublishersView = Vue.component('topPublishersView', {
   },
   methods: {
     getTopPublishers: function (query) {
+
       let url = `/publisher/top?elemPerPage=${this.elemPerPage}`;
+
       if (query.page)  url += '&page=' + query.page;
+      if (query.name)  url += '&name=' + query.name;
+
       axios(url)
       .then((res) => {
         this.publishers = res.data.items;
-        this.publisherCount = res.data.count[0].count;
+        this.publisherCount = res.data.count[0].total;
         this.pagesPerQuery = parseInt(this.publisherCount/this.elemPerPage);
       })
     },
@@ -38,11 +42,12 @@ const topPublishersView = Vue.component('topPublishersView', {
   <article class="container">
     <div class="col">
 
-      <div class="row">
+      <div class="col-6">
+        <search :path="'/publisher/top'"></search>
         <pagination-bar :pagesPerQuery = 'pagesPerQuery'  
-                :queryCount = 'publisherCount'
-                :searchPath= "'/publisher/top'"> 
-        </pagination-bar>
+                        :queryCount = 'publisherCount'
+                        :searchPath= "'/publisher/top'"> 
+        </pagination-bar>   
       </div>
 
       <div class="row">

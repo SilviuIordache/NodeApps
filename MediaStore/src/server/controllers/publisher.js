@@ -28,50 +28,49 @@ class PublisherController {
     }, ]).exec(done);
   }
 
-  getTopPublishers(page, elemPerPage = 15, done) {
+  getTopPublishers(page, name, elemPerPage = 15, done) {
+    // used for searching inside the aggregation, if name provided
+    let searchObj = {}; 
+    if (name) {
+      let regex = new RegExp(`${name}`, 'i');
+      searchObj = {'Publisher' : regex }
+    }
 
-    let pipelineStages = [{
-      $group: {
-        _id: '$Publisher',
-        pubName: {  $first: '$Publisher' },
-        count:   {  $sum: 1 },
-        minYear: {  $min: '$PublicationYear'},
-        maxYear: {  $max: '$PublicationYear'}
+    let uniquePublishers = [
+      { $match: searchObj },
+      { $group: {
+          _id: '$Publisher',
+          pubName: {  $first: '$Publisher' },
+          count:   {  $sum: 1 },
+          minYear: {  $min: '$PublicationYear'},
+          maxYear: {  $max: '$PublicationYear'}
+        },
       },
-    },
-    { $sort: { count: -1 } },
-    { $skip: page * elemPerPage  },
-    { $limit: elemPerPage },
-  ]
+    ]
+      
+    let revOrder = [
+      ...uniquePublishers,
+      { $sort: { count: -1 } }, //sorting by publications descending
+      { $skip: page * elemPerPage  },
+      { $limit: elemPerPage },
+    ]
 
-    this.model
-      .aggregate(pipelineStages)
-      //.exec(this.findTopPublishers(err, items, countTopPublishers))
+    let totalCount = [
+      ...uniquePublishers,
+      { $count: 'total' }
+    ]
+
+    this.model.aggregate(revOrder)
       .exec((err, items) => {
-        if (err) return console.log(err);
-        this.model.aggregate([
-          { $group: { _id: '$Publisher' }}, 
-          { $group: { _id: 1,  count: { $sum: 1 }}}
-        ])
-      .exec((err, count) => {
-          if (err) return console.log(err);
-          done(null, { items, count });
+        if (err) return done(err);
+
+        this.model.aggregate(totalCount)
+          .exec((err, count) => {
+            if (err) return done(err);
+    
+            done(null, { items, count });
         });
       });
-  }
-
-  findTopPublishers(err, items, done) {
-      if (err) return console.log(err);
-      this.model.aggregate([
-        { $group: {  _id: '$Publisher' }}, 
-        { $group: { _id: 1,  count: { $sum: 1 }}}
-      ]).exec(done);
-  }
-
-  countTopPublishers(err, count, done) {
-    if (err) return console.log(err);
-
-
   }
 
 }

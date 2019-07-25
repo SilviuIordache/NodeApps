@@ -30,14 +30,14 @@ class PublisherController {
 
   getTopPublishers(page, name, elemPerPage = 15, done) {
     // used for searching inside the aggregation, if name provided
-    let searchObj = {}; 
+    let searchObj = {};
     if (name) {
       let regex = new RegExp(`${name}`, 'i');
       searchObj = {'Publisher' : regex }
     }
 
-    let uniquePublishers = [
-      { $match: searchObj },
+    let pipelineStage = [
+      { $match: searchObj},
       { $group: {
           _id: '$Publisher',
           pubName: {  $first: '$Publisher' },
@@ -45,31 +45,25 @@ class PublisherController {
           minYear: {  $min: '$PublicationYear'},
           maxYear: {  $max: '$PublicationYear'}
         },
-      },
+      },{
+      $facet: {
+          publishers: [
+              { $sort: { count: -1 } },
+              { $skip: page * elemPerPage  },
+              { $limit: elemPerPage },
+              { $group: { _id: null, publishers: { $push: "$$ROOT"} } }
+          ],
+          total: [
+              { $group: { _id: null, total: { $sum: 1 } } }
+           ]
+         }
+      }
     ]
       
-    let revOrder = [
-      ...uniquePublishers,
-      { $sort: { count: -1 } }, //sorting by publications descending
-      { $skip: page * elemPerPage  },
-      { $limit: elemPerPage },
-    ]
-
-    let totalCount = [
-      ...uniquePublishers,
-      { $count: 'total' }
-    ]
-
-    this.model.aggregate(revOrder)
-      .exec((err, items) => {
+    this.model.aggregate(pipelineStage)
+      .exec((err, res) => {
         if (err) return done(err);
-
-        this.model.aggregate(totalCount)
-          .exec((err, count) => {
-            if (err) return done(err);
-    
-            done(null, { items, count });
-        });
+        done (null, res);
       });
   }
 

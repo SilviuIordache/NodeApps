@@ -32,8 +32,8 @@ const topPublishersView = Vue.component('topPublishersView', {
 
       axios(url)
       .then((res) => {
-        this.publishers = res.data.items;
-        this.publisherCount = res.data.count[0].total;
+        this.publishers = res.data[0].publishers[0].publishers;
+        this.publisherCount = res.data[0].total[0].total;
         this.pagesPerQuery = parseInt(this.publisherCount/this.elemPerPage);
       })
     },

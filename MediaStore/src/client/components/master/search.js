@@ -1,5 +1,5 @@
 Vue.component('search', {
-  props: ['redirPath'],
+  props: ['path'],
   data: function (){
     return {
       searchData: ''
@@ -8,7 +8,7 @@ Vue.component('search', {
   methods: {  
     searchStart: function () {
         router.push({
-          path: this.redirPath,
+          path: this.path,
           query: {
             name: this.searchData
           }

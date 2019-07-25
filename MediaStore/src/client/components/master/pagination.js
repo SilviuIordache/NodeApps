@@ -1,5 +1,5 @@
 Vue.component('pagination-bar', {
-  props: ['pagesPerQuery', 'queryCount', 'searchPath'],
+  props: ['pagesPerQuery', 'queryCount', 'path'],
   template: `
     <nav aria-label="pagination-label">
         <ul class="pagination">
@@ -7,7 +7,7 @@ Vue.component('pagination-bar', {
           <li class="page-item" 
              :class="{disabled: parseInt($route.query.page || 0) === 0}">
             <router-link class="page-link"  :to="{ 
-              path: searchPath,
+              path,
               query: { 
                 page: 0,
                 ord: $route.query.ord,
@@ -19,7 +19,8 @@ Vue.component('pagination-bar', {
           <li class="page-item" 
              :class="{disabled: parseInt($route.query.page || 0) <= 0}">
             <router-link class="page-link" 
-              :to="{ path: searchPath, query: { 
+              :to="{ path, 
+                     query: { 
                         page: parseInt($route.query.page || 0) - 1,
                         ord: $route.query.ord,
                         name: $route.query.name}}">
@@ -34,7 +35,8 @@ Vue.component('pagination-bar', {
 
           <li  class="page-item" :class="{disabled: parseInt($route.query.page) === pagesPerQuery}">
             <router-link  class="page-link" 
-              :to="{ path: searchPath, query: { 
+              :to="{ path, 
+                     query: { 
                       page: parseInt($route.query.page || 0) + 1,
                       ord: $route.query.ord,
                       name: $route.query.name}}">
@@ -45,7 +47,7 @@ Vue.component('pagination-bar', {
           <li class="page-item"
              :class="{disabled: parseInt($route.query.page || 0) === pagesPerQuery }">
             <router-link class="page-link"  :to="{ 
-              path: searchPath,
+              path,
               query: { 
                 page: pagesPerQuery,
                 ord: $route.query.ord,

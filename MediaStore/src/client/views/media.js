@@ -57,10 +57,10 @@
           <div class="row">
 
             <div class="col-6">
-              <search :redirPath="'/media'"> </search>
+              <search :path="'/media'"> </search>
               <pagination-bar :pagesPerQuery = 'pagesPerQuery' 
                               :queryCount = 'queryCount'
-                              :searchPath= "'/media'"> 
+                              :path= "'/media'"> 
               </pagination-bar>
             </div>
 
@@ -78,7 +78,7 @@
 
           <pagination-bar :pagesPerQuery = 'pagesPerQuery'  
                           :queryCount = 'queryCount'
-                          :searchPath= "'/media'"> 
+                          :path= "'/media'"> 
           </pagination-bar>
 
         </div>

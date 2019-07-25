@@ -1,5 +1,5 @@
 Vue.component('publisher-list', {
-  props: ['publishers'],
+  props: ['publishers', 'elemPerPage'],
   template: `
     <table class="table">
 
@@ -17,7 +17,10 @@ Vue.component('publisher-list', {
         <tr v-for="(publisher, index) in publishers"
           :index = "index"
           :key= "publisher._id">
-            <th scope="row"> {{ index }}</th>
+
+            <th scope="row"> 
+              {{ index + elemPerPage * ($route.query.page || 0) }}
+            </th>
 
             <td> 
               <router-link class="nav-item nav-link" :to="{ 

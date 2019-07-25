@@ -46,7 +46,9 @@ const topPublishersView = Vue.component('topPublishersView', {
       </div>
 
       <div class="row">
-        <publisher-list :publishers="validPublishers"></publisher-list>
+        <publisher-list :publishers="validPublishers"
+                        :elemPerPage="elemPerPage">
+        </publisher-list>
       </div>
 
     </div> 

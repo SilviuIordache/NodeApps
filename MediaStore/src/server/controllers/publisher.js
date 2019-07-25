@@ -37,6 +37,7 @@ class PublisherController {
     }
 
     let pipelineStage = [
+      { $match: {'Publisher': {$ne : "-"}}},
       { $match: searchObj},
       { $group: {
           _id: '$Publisher',

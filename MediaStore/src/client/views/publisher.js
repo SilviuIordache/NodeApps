@@ -7,14 +7,6 @@ const topPublishersView = Vue.component('topPublishersView', {
       pagesPerQuery: 0
     }
   },
-  computed: {
-    validPublishers: function() {
-      //we filter out the publisher named '-' (entries with no publisher)
-        return this.publishers.filter( (pub) => {
-          if (pub.pubName != '-') return pub;
-        })
-    }
-  },
   created: function () {
     this.getTopPublishers(this.$route.query);
   },
@@ -51,7 +43,7 @@ const topPublishersView = Vue.component('topPublishersView', {
       </div>
 
       <div class="row">
-        <publisher-list :publishers="validPublishers"
+        <publisher-list :publishers="publishers"
                         :elemPerPage="elemPerPage">
         </publisher-list>
       </div>

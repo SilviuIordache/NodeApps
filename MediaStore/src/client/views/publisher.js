@@ -1,56 +1,57 @@
-const publishersView = Vue.component('publishersView', {
+const topPublishersView = Vue.component('topPublishersView', {
   data: function () {
     return {
-      entries: []
+      publishers: [],
+      publisherCount: 0,
+      elemPerPage: 10,
+      pagesPerQuery: 0
+    }
+  },
+  computed: {
+    validPublishers: function() {
+      //we filter out the publisher named '-' (entries with no publisher)
+        return this.publishers.filter( (pub) => {
+          if (pub.pubName != '-') return pub;
+        })
     }
   },
   created: function () {
-    this.getPublisherEntries(this.$route.query.name);
+    this.getTopPublishers(this.$route.query);
   },
   beforeRouteUpdate: function (to, from, next) {
-    this.getPublisherEntries(to.query.name);
-    window.scrollTo(0, 0);
+    this.getTopPublishers(to.query);
     next();
   },
   methods: {
-    getPublisherEntries: function (name) {
-      let url = '/publisher?';
-      if (name)   url += 'name=' + name; 
-
+    getTopPublishers: function (query) {
+      let url = `/publisher/top?elemPerPage=${this.elemPerPage}`;
+      if (query.page)  url += '&page=' + query.page;
       axios(url)
-        .then((res) => {
-          //grabbing what I need from the res obj
-          if (res.data.length > 0) {
-            this.entries = res.data[0].publications;
-          } else {
-            this.entries = [{id: '-', title: 'no results'}];
-          }
-        });
-    }
+      .then((res) => {
+        this.publishers = res.data.items;
+        this.publisherCount = res.data.count[0].count;
+        this.pagesPerQuery = parseInt(this.publisherCount/this.elemPerPage);
+      })
+    },
   },
   template: `
-    <article class="container">
+  <article class="container">
+    <div class="col">
+
       <div class="row">
+        <pagination-bar :pagesPerQuery = 'pagesPerQuery'  
+                :queryCount = 'publisherCount'
+                :searchPath= "'/publisher/top'"> 
+        </pagination-bar>
+      </div>
 
-        <div class="col col-md-2">
-          <filter-bar></filter-bar>
-        </div> 
+      <div class="row">
+        <publisher-list :publishers="validPublishers"
+                        :elemPerPage="elemPerPage">
+        </publisher-list>
+      </div>
 
-        <div class="col col-md-10">
-          <div class="col">
-
-            <div class="row">
-              <search :redirPath="'/publisher'"> </search>
-            </div>
-
-            <div class="row">
-              <entry-list :entries='entries'></entry-list>
-            </div>
-
-          </div>
-        </div> 
-
-      </div> 
-    </article>
+    </div> 
+  </article>
   `
 })

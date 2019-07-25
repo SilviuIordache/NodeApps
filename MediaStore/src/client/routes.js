@@ -3,7 +3,7 @@ const routes = [
   { path: '/media/add', component: mediaForm },
   { path: '/media/edit', component: mediaForm },
   { path: '/media/:id', component: getDetailedView },
-  { path: '/publisher', component: publishersView },
+  //{ path: '/publisher', component: publishersView },
   { path: '/publisher/top', component: topPublishersView },
 ];
 

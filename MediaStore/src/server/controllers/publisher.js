@@ -43,7 +43,7 @@ class PublisherController {
           _id: '$Publisher',
           pubName: {  $first: '$Publisher' },
           count:   {  $sum: 1 },
-          minYear: {  $min: '$PublicationYear'},
+          minYear: { $min: {$cond: [ {$eq: ["$PublicationYear", "-"]} , '9999','$PublicationYear'] }   },
           maxYear: {  $max: '$PublicationYear'}
         },
       },{

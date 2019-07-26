@@ -6,7 +6,7 @@ const config = require('../config/config');
 
 let chunkNo = 0;
 const chunk = 10000;
-const limit = 5000013;
+const limit = 1000013;
 const totalChunks = Math.ceil(limit / chunk);
 
 let currentLine = 0;
@@ -47,10 +47,14 @@ mdbclient.connect(url, {
             return stream.end();
           }
 
-          // trim extra characters
+          // trim extra characters, ex: c2004, [2004], '2004'
           data['CheckoutYear'] = data['CheckoutYear'].replace(/\D/g, '');
           data['PublicationYear'] = data['PublicationYear'].replace(/\D/g, '');
-          //data['Title'] = trimTitle(data['Title']);
+
+          // selecting first year from conjoined years: 20102005 -> 2010, 19481923 -> 1948
+          if (data['PublicationYear'].length === 8) 
+            data['PublicationYear'] = data['PublicationYear'].slice(0, 4);
+
 
           // check all fields for empty '' string and replace with - if so
           for (key in data) {

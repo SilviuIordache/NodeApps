@@ -6,7 +6,7 @@ const config = require('../config/config');
 
 let chunkNo = 0;
 const chunk = 10000;
-const limit = 50013;
+const limit = 5000013;
 const totalChunks = Math.ceil(limit / chunk);
 
 let currentLine = 0;

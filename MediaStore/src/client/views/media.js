@@ -64,7 +64,6 @@
         <div class="col col-md-10">
 
           <div class="row">
-
             <div class="col-6">
               <search :path="'/media'"> </search>
               <pagination-bar :pagesPerQuery = 'pagesPerQuery' 
@@ -73,7 +72,6 @@
                               :elemPerPage="elemPerPage"
                               :reqTime="reqTime"> 
               </pagination-bar>
-              
             </div>
 
             <div class="col-6 ">
@@ -83,7 +81,6 @@
                 </button>
               </router-link>   
             </div>
-
           </div>
 
           <media-list :mediaItems='mediaItems'

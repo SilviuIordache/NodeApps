@@ -40,28 +40,36 @@ const publisherView = Vue.component('publisher-view', {
   },
   template: `
   <article class="container">
-    <div class="col">
 
-      <div class="col-6">
-        <search :path="'/publisher/top'">
-        </search>
+  <div class="row">
 
-        <pagination-bar :pagesPerQuery = 'pagesPerQuery'  
-                        :queryCount = 'publisherCount'
-                        :searchPath= "'/publisher/top'"
-                        :elemPerPage="elemPerPage"
-                        :reqTime="reqTime"> 
-        </pagination-bar>   
+        <div class="col-2">
+          <filter-bar></filter-bar>
+        </div>
+
+        <div class="col-10">
+          <div class="col-6">
+            <search :path="'/publisher/top'">
+            </search>
+            <pagination-bar :pagesPerQuery = 'pagesPerQuery'  
+                            :queryCount = 'publisherCount'
+                            :searchPath= "'/publisher/top'"
+                            :elemPerPage="elemPerPage"
+                            :reqTime="reqTime"> 
+            </pagination-bar>   
+          </div>
+
+          <div class="row">
+            <publisher-list :publishers="publishers"
+                            :elemPerPage="elemPerPage"
+                            :reqFinished="reqFinished">
+            </publisher-list>
+          </div>
       </div>
+  </div>
 
-      <div class="row">
-        <publisher-list :publishers="publishers"
-                        :elemPerPage="elemPerPage"
-                        :reqFinished="reqFinished">
-        </publisher-list>
-      </div>
+  
 
-    </div> 
   </article>
   `
 })

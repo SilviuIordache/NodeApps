@@ -60,7 +60,9 @@
   template: `
     <article class="container">
       <div class="row">
-        <div class="col col-md-2">  <filter-bar :path="'/media'"></filter-bar>    </div> 
+        <div class="col col-md-2">  
+          <filter-bar :path="'/media'"></filter-bar>    
+        </div> 
         <div class="col col-md-10">
 
           <div class="row">

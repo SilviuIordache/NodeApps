@@ -30,7 +30,7 @@ Vue.component('pagination-bar', {
 
 
           <li class="page-item disabled">  
-            <div class="page-link"> Pg: {{$route.query.page || 0}} /  {{pagesPerQuery}} </div>  
+            <div class="page-link"> Pg: {{($route.query.page || 0) + 1}} /  {{pagesPerQuery}} </div>  
           </li>
 
           <li  class="page-item" :class="{disabled: parseInt($route.query.page) === pagesPerQuery}">
@@ -45,11 +45,11 @@ Vue.component('pagination-bar', {
           </li>
 
           <li class="page-item"
-             :class="{disabled: parseInt($route.query.page || 0) === pagesPerQuery }">
+             :class="{disabled: parseInt(($route.query.page || 0) - 1 ) === pagesPerQuery }">
             <router-link class="page-link"  :to="{ 
               path,
               query: { 
-                page: pagesPerQuery,
+                page: pagesPerQuery - 1,
                 ord: $route.query.ord,
                 name: $route.query.name }}"> 
               <div> > </div>

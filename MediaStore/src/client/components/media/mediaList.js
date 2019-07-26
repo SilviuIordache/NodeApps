@@ -1,7 +1,7 @@
 Vue.component('media-list', {
-  props: ['mediaItems'],
+  props: ['mediaItems', 'reqFinished'],
   template: `
-    <div class="row">
+    <div class="row" v-if="reqFinished">
       <media 
         v-for="media in mediaItems"
         :_id ="media._id" 
@@ -17,6 +17,14 @@ Vue.component('media-list', {
         :PublicationYear="media.PublicationYear"
         :key="media._id"> 
       </media>
+    </div>
+
+    <div v-else>
+      <div class="text-center">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
     </div>
   `
 });

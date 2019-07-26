@@ -42,9 +42,9 @@ Vue.component('publisher-list', {
 
     <div v-else >
       <div class="text-center">
-      <div class="spinner-border" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
       </div>
     </div>
   `

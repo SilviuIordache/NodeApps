@@ -5,7 +5,10 @@ const publisherView = Vue.component('publisher-view', {
       publisherCount: 0,
       elemPerPage: 10,
       pagesPerQuery: 0,
-      reqFinished: true
+      reqFinished: true,
+      t0: 0,
+      t1: 0,
+      reqTime: 0
     }
   },
   created: function () {
@@ -17,6 +20,7 @@ const publisherView = Vue.component('publisher-view', {
   },
   methods: {
     getTopPublishers: function (query) {
+      this.t0 = new Date();
       this.reqFinished = false;
       let url = `/publisher/top?elemPerPage=${this.elemPerPage}`;
 
@@ -25,6 +29,8 @@ const publisherView = Vue.component('publisher-view', {
 
       axios(url)
       .then((res) => {
+        this.t1 = new Date();
+        this.reqTime = this.t1 - this.t0;
         this.publishers = res.data[0].publishers[0].publishers;
         this.publisherCount = res.data[0].total[0].total;
         this.pagesPerQuery = parseInt(this.publisherCount/this.elemPerPage);
@@ -37,10 +43,14 @@ const publisherView = Vue.component('publisher-view', {
     <div class="col">
 
       <div class="col-6">
-        <search :path="'/publisher/top'"></search>
+        <search :path="'/publisher/top'">
+        </search>
+
         <pagination-bar :pagesPerQuery = 'pagesPerQuery'  
                         :queryCount = 'publisherCount'
-                        :searchPath= "'/publisher/top'"> 
+                        :searchPath= "'/publisher/top'"
+                        :elemPerPage="elemPerPage"
+                        :reqTime="reqTime"> 
         </pagination-bar>   
       </div>
 

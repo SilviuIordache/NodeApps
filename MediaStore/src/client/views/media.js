@@ -5,7 +5,11 @@
       mediaItems: [],
       queryCount: 0,
       elemPerPage: 10,
-      pagesPerQuery: 0
+      pagesPerQuery: 0,
+      reqFinished: true,
+      t0: 0,
+      t1: 0,
+      reqTime: 0
     };
   },
   created: function () {
@@ -27,6 +31,8 @@
   },
   methods: {
     getMediaItems: function (query) {
+      this.t0 = new Date();
+      this.reqFinished = false;
       let url = `/media?&elemPerPage=${this.elemPerPage}`;
 
       if (query.page)  url += '&page=' + query.page;
@@ -42,9 +48,12 @@
       }
       axios(url)
         .then((res) => {
+          this.t1 = new Date();
+          this.reqTime = this.t1 - this.t0;
           this.mediaItems = res.data.items;
           this.queryCount = res.data.count;
           this.pagesPerQuery = parseInt(this.queryCount/this.elemPerPage)
+          this.reqFinished = true;
         });
     },
   },
@@ -60,8 +69,11 @@
               <search :path="'/media'"> </search>
               <pagination-bar :pagesPerQuery = 'pagesPerQuery' 
                               :queryCount = 'queryCount'
-                              :path= "'/media'"> 
+                              :path= "'/media'"
+                              :elemPerPage="elemPerPage"
+                              :reqTime="reqTime"> 
               </pagination-bar>
+              
             </div>
 
             <div class="col-6 ">
@@ -74,11 +86,15 @@
 
           </div>
 
-          <media-list :mediaItems='mediaItems'> </media-list>
+          <media-list :mediaItems='mediaItems'
+                      :reqFinished='reqFinished'> 
+          </media-list>
 
-          <pagination-bar :pagesPerQuery = 'pagesPerQuery'  
-                          :queryCount = 'queryCount'
-                          :path= "'/media'"> 
+          <pagination-bar :pagesPerQuery = 'pagesPerQuery' 
+                              :queryCount = 'queryCount'
+                              :path= "'/media'"
+                              :elemPerPage="elemPerPage"
+                              :reqTime="reqTime"> 
           </pagination-bar>
 
         </div>

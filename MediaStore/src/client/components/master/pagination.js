@@ -1,5 +1,5 @@
 Vue.component('pagination-bar', {
-  props: ['pagesPerQuery', 'queryCount', 'path'],
+  props: ['pagesPerQuery', 'queryCount', 'path', 'elemPerPage','reqTime'],
   template: `
     <nav aria-label="pagination-label">
         <ul class="pagination">
@@ -58,7 +58,8 @@ Vue.component('pagination-bar', {
 
         </ul>
 
-        <div> {{ queryCount }} results </div>
+        <div> {{elemPerPage}} of {{ queryCount }} results retrieved in {{ reqTime/1000 }} sec </div>
+
       </nav>
     `
 });

@@ -1,7 +1,7 @@
 Vue.component('publisher-list', {
-  props: ['publishers', 'elemPerPage'],
+  props: ['publishers', 'elemPerPage', 'reqFinished'],
   template: `
-    <table class="table">
+    <table class="table" v-if="reqFinished">
 
       <thead class="thead-dark">
         <tr>
@@ -13,7 +13,7 @@ Vue.component('publisher-list', {
         </tr>
       </thead>
 
-      <tbody>
+      <tbody >
         <tr v-for="(publisher, index) in publishers"
           :index = "index"
           :key= "publisher._id">
@@ -39,5 +39,13 @@ Vue.component('publisher-list', {
         </tr>
       </tbody>
     </table>
+
+    <div v-else >
+      <div class="text-center">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      </div>
+    </div>
   `
 })

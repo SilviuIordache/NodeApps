@@ -5,7 +5,7 @@ const url = 'mongodb://localhost:27017/';
 const config = require('../config/config');
 
 let chunkNo = 0;
-const chunk = 10000;
+const chunk = 5000;
 const limit = 1000013;
 const totalChunks = Math.ceil(limit / chunk);
 

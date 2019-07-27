@@ -4,6 +4,8 @@ Vue.component('pagination-bar', {
     <nav aria-label="pagination-label">
         <ul class="pagination">
           
+        
+          <!---- FIRST PAGE ---->
           <li class="page-item" 
              :class="{disabled: parseInt($route.query.page || 0) === 0}">
             <router-link class="page-link"  :to="{ 
@@ -16,6 +18,7 @@ Vue.component('pagination-bar', {
             </router-link>
           </li>
 
+          <!---- PREV PAGE ---->
           <li class="page-item" 
              :class="{disabled: parseInt($route.query.page || 0) <= 0}">
             <router-link class="page-link" 
@@ -28,11 +31,12 @@ Vue.component('pagination-bar', {
             </router-link>
           </li>
 
-
+          <!---- CURRENT / TOTAL ---->
           <li class="page-item disabled">  
-            <div class="page-link"> Pg: {{($route.query.page || 0) + 1}} /  {{pagesPerQuery}} </div>  
+            <div class="page-link"> Pg: {{($route.query.page || 0) + 1}} /  {{pagesPerQuery + 1}} </div>  
           </li>
 
+          <!---- NEXT PAGE ---->
           <li  class="page-item" :class="{disabled: parseInt($route.query.page) === pagesPerQuery}">
             <router-link  class="page-link" 
               :to="{ path, 
@@ -44,12 +48,13 @@ Vue.component('pagination-bar', {
             </router-link>
           </li>
 
+          <!---- LAST PAGE ---->
           <li class="page-item"
-             :class="{disabled: parseInt(($route.query.page || 0) - 1 ) === pagesPerQuery }">
+             :class="{disabled: parseInt(($route.query.page || 0) ) === pagesPerQuery }">
             <router-link class="page-link"  :to="{ 
               path,
               query: { 
-                page: pagesPerQuery - 1,
+                page: pagesPerQuery,
                 ord: $route.query.ord,
                 name: $route.query.name }}"> 
               <div> > </div>

@@ -35,7 +35,7 @@ let pipelineStage = [
   { $match: {'Publisher': {$ne : "-"}}},
   { $group: {
       _id: '$Publisher',
-      publisherName: { $first: '$Publisher' },
+      name: { $first: '$Publisher' },
       publications:   { $sum: 1 },
       firstYear: { $min: { $cond: [ 
                                   { $eq: ["$PublicationYear", "-"] },

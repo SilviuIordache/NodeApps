@@ -13,7 +13,7 @@ class MediaController {
     this.mediaItems
       .find(searchObj, 
         (err, items) => {
-          if (err) return console.log(err);
+          if (err) return done(err);
           this.mediaItems
           .countDocuments(searchObj,
             (err, count) => {

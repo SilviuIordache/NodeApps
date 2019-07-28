@@ -26,6 +26,7 @@ const publisherView = Vue.component('publisher-view', {
 
       if (query.page)  url += '&page=' + query.page;
       if (query.name)  url += '&name=' + query.name;
+      if (query.order)  url += '&name=' + query.order;
 
       axios(url)
       .then((res) => {
@@ -33,8 +34,8 @@ const publisherView = Vue.component('publisher-view', {
         this.t1 = new Date();
         this.reqTime = this.t1 - this.t0;
 
-        this.publishers = res.data[0].publishers[0].publishers;
-        this.publisherCount = res.data[0].total[0].total;
+        this.publishers = res.data.items;
+        this.publisherCount = res.data.count;
         this.pagesPerQuery = parseInt(this.publisherCount/this.elemPerPage);
       })
     },

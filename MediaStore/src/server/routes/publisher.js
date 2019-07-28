@@ -1,23 +1,12 @@
 const Router = require('express').Router;
 const PublisherController = require('../controllers/publisher');
-let mediaModel = require('../model/media');
+let publisherModel = require('../model/publisher');
 let publisherRoutes = new Router();
 
 // injecting the publisher model in the controller instance
-const publisherController = new PublisherController(mediaModel);
+const publisherController = new PublisherController(publisherModel);
 
 
-publisherRoutes.get('/', (req, res) => {
-  publisherController.get(
-    req.query.name,
-    (err, result) => {
-      if (err) {
-        console.log(err);
-        return res.status(500).end();
-      }
-      res.json(result);
-    })
-});
 
 publisherRoutes.get('/top', (req, res) => {
 
@@ -25,9 +14,13 @@ publisherRoutes.get('/top', (req, res) => {
   const elemPerPage = parseInt(req.query.elemPerPage) || 10;
   const name = req.query.name;
 
-  publisherController.getTopPublishers(
+  const ord = req.query.ord;
+  let ordParam = (ord === 'asc' ? 1 : -1)
+
+  publisherController.getPublishers(
     page,
     name,
+    ordParam,
     elemPerPage, 
     (err, result) => {
       if (err) return res.status(500).json(err);

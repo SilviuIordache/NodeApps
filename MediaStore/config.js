@@ -1,7 +1,7 @@
 module.exports = {
   'db': 'media',
   'medCol': 'media',
-  'aggCol': 'mediaAgg',
+  'pubCol': 'publishers',
   'col' : 'media'
 };
 

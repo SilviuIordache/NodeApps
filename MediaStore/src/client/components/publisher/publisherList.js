@@ -27,15 +27,15 @@ Vue.component('publisher-list', {
                 path: '/media',
                 query: {
                   field: 'Publisher',
-                  name: publisher.pubName 
+                  name: publisher.name 
               }}">
-                {{ publisher.pubName }} 
+                {{ publisher.name }} 
               </router-link>
             </td>
             
-            <td> {{ publisher.count }} </td>
-            <td> {{ publisher.minYear }} </td>
-            <td> {{ publisher.maxYear }} </td>
+            <td> {{ publisher.publications }} </td>
+            <td> {{ publisher.firstYear }} </td>
+            <td> {{ publisher.lastYear }} </td>
         </tr>
       </tbody>
     </table>

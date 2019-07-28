@@ -2,9 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const config = require('../../../config');
 
-let col;
-
-col = config.medCol;
+let col = config.medCol;
 
 const mediaSchema = new Schema(
   {

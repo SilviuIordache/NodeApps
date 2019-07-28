@@ -11,10 +11,11 @@ mediaRoutes.get('/', (req, res) => {
   const page = req.query.page || 0;
   const field = req.query.field;
   const name = req.query.name;
-  const ord = req.query.ord;
   const elemPerPage = parseInt(req.query['elemPerPage']) || 10;
+  
+  const ord = req.query.ord;
   let ordParam = (ord === 'asc' ? 1 : -1)
-
+  
   mediaController.getMedia(
     page,
     field,

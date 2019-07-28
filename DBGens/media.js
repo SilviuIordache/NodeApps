@@ -5,8 +5,8 @@ const url = 'mongodb://localhost:27017/';
 const config = require('../MediaStore/config');
 
 let chunkNo = 0;
-const chunk = 500;
-const limit = 10000013;
+const chunk = 5000;
+const limit = 500013;
 const totalChunks = Math.ceil(limit / chunk);
 
 let currentLine = 0;
@@ -70,7 +70,7 @@ mdbclient.connect(url, {
               col.insertMany(results, (err, res) => {
                 if (err) console.error(err);
                 chunkNo++;
-                if (chunkNo % 1000 === 0)
+                //if (chunkNo % 1000 === 0)
                   console.log(`chunk: ${chunkNo}/${totalChunks}`);
               });
             }

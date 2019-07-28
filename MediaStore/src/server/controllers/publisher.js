@@ -8,7 +8,7 @@ class PublisherController {
     let searchObj = {};
     if (name) {
       let regex = new RegExp(`${name}`, 'i');
-      searchObj = {'Publisher' : regex }
+      searchObj = {'name' : regex }
     }
   
     this.publishers

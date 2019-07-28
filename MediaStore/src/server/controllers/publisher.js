@@ -41,11 +41,13 @@ class PublisherController {
       { $match: searchObj},
       { $group: {
           _id: '$Publisher',
-          pubName: {  $first: '$Publisher' },
-          count:   {  $sum: 1 },
-          minYear: { $min: {
-            $cond: [ {$eq: ["$PublicationYear", "-"]} , '9999','$PublicationYear'] }   },
-          maxYear: {  $max: '$PublicationYear'}
+          pubName: { $first: '$Publisher' },
+          count:   { $sum: 1 },
+          minYear: { $min: { $cond: [ 
+                                      { $eq: ["$PublicationYear", "-"] },
+                                      '9999',
+                                      '$PublicationYear'] } },
+          maxYear: { $max: '$PublicationYear'}
         },
       },{
       $facet: {

@@ -1,6 +1,7 @@
 const publisherView = Vue.component('publisher-view', {
   data: function () {
     return {
+      ord: 'desc',
       publishers: [],
       publisherCount: 0,
       elemPerPage: 10,
@@ -13,6 +14,14 @@ const publisherView = Vue.component('publisher-view', {
   },
   created: function () {
     this.getTopPublishers(this.$route.query);
+
+    // change order event listener
+    this.$on('filter-bar:orderChanged',
+      (ord) => {
+        // this.ord gets value from event listener
+        this.ord = ord;
+        this.getTopPublishers(this.$route.query);
+      })
   },
   beforeRouteUpdate: function (to, from, next) {
     this.getTopPublishers(to.query);
@@ -26,7 +35,11 @@ const publisherView = Vue.component('publisher-view', {
 
       if (query.page)  url += '&page=' + query.page;
       if (query.name)  url += '&name=' + query.name;
-      if (query.order)  url += '&name=' + query.order;
+      if (query.ord)  {
+        url += '&ord=' + query.ord;
+      } else {
+        url +='&ord=desc'
+      }
 
       axios(url)
       .then((res) => {
@@ -46,7 +59,7 @@ const publisherView = Vue.component('publisher-view', {
   <div class="row">
 
         <div class="col-2">
-          <filter-bar></filter-bar>
+          <filter-bar :path="'/publisher/top'"></filter-bar>
         </div>
 
         <div class="col-10">

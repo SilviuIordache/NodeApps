@@ -25,10 +25,7 @@ class PublisherController {
       .sort({ 'publications': order })
       .skip(page * elemPerPage)
       .limit(elemPerPage);
-  
   }
-
-
 }
 
 module.exports = PublisherController;

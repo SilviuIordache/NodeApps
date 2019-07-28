@@ -2,11 +2,11 @@ const fs = require('fs');
 const csv = require('csv-parser');
 const mdbclient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017/';
-const config = require('../config/config');
+const config = require('../MediaStore/config');
 
 let chunkNo = 0;
-const chunk = 5000;
-const limit = 1000013;
+const chunk = 500;
+const limit = 10000013;
 const totalChunks = Math.ceil(limit / chunk);
 
 let currentLine = 0;
@@ -40,7 +40,7 @@ mdbclient.connect(url, {
         conn.close();
         return console.error(err);
       }
-      let stream = fs.createReadStream('../files/checkouts-by-title.csv')
+      let stream = fs.createReadStream('../_files/checkouts-by-title.csv')
         .pipe(csv())
         .on('data', (data) => {
           if (currentLine >= limit) {
@@ -70,7 +70,8 @@ mdbclient.connect(url, {
               col.insertMany(results, (err, res) => {
                 if (err) console.error(err);
                 chunkNo++;
-                console.log(`chunk: ${chunkNo}/${totalChunks}`);
+                if (chunkNo % 1000 === 0)
+                  console.log(`chunk: ${chunkNo}/${totalChunks}`);
               });
             }
             results = [];

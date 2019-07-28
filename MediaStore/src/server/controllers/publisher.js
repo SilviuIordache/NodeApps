@@ -1,3 +1,5 @@
+const config = require('../../../config');
+
 class PublisherController {
   constructor(mediaModel) {
     this.model = mediaModel;
@@ -62,7 +64,7 @@ class PublisherController {
            ]
          }
       },
-      { $out : "test-aggr"}
+      //{ $out : `${config.aggCol}`}
     ]
       
     this.model.aggregate(pipelineStage)

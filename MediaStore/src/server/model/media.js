@@ -1,10 +1,13 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const config = require('../../../../config/config.js');
+const config = require('../../../config');
 
-const col = config.medCol;
+let col;
 
-const mediaSchema = new Schema({
+col = config.medCol;
+
+const mediaSchema = new Schema(
+  {
     UsageClass: String,
     CheckoutType: String,
     MaterialType: String,
@@ -16,11 +19,9 @@ const mediaSchema = new Schema({
     Subjects: String,
     Publisher: String,
     PublicationYear: String,
-}, 
-{
-    collection: `${col}`
-})
-
+  }, 
+  { collection: `${col}`}
+)
 
 // create media model
 const Media = mongoose.model(col, mediaSchema);

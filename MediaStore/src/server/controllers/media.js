@@ -3,13 +3,6 @@ class MediaController {
     this.mediaItems = mediaModel;
   }
 
-  getMediaById(id, done) {
-    this.mediaItems.findById(id, (err, res) => {
-      if (err) return done(err);
-      done(null, res);
-    })
-  };
-
   getMedia(page, field, name, order, elemPerPage = 15, done) {
     let searchObj = {};
 
@@ -31,6 +24,13 @@ class MediaController {
       .sort({ '_id': order })
       .skip(page * elemPerPage)
       .limit(elemPerPage);
+  };
+
+  getMediaById(id, done) {
+    this.mediaItems.findById(id, (err, res) => {
+      if (err) return done(err);
+      done(null, res);
+    })
   };
 
   createMedia(media, done) {

@@ -40,7 +40,7 @@ mdbclient.connect(url, {
         conn.close();
         return console.error(err);
       }
-      let stream = fs.createReadStream('../testFiles/checkouts-by-title.csv')
+      let stream = fs.createReadStream('../files/checkouts-by-title.csv')
         .pipe(csv())
         .on('data', (data) => {
           if (currentLine >= limit) {

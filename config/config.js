@@ -1,7 +1,6 @@
 module.exports = {
-  'db': 'mediaDB',
-  'medCol': 'mediaCollection',
-  'userCol': 'usersCollection'
+  'db': 'media',
+  'medCol': 'media',
 };
 
 

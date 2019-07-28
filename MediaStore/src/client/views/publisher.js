@@ -29,12 +29,13 @@ const publisherView = Vue.component('publisher-view', {
 
       axios(url)
       .then((res) => {
+        this.reqFinished = true;
         this.t1 = new Date();
         this.reqTime = this.t1 - this.t0;
+
         this.publishers = res.data[0].publishers[0].publishers;
         this.publisherCount = res.data[0].total[0].total;
         this.pagesPerQuery = parseInt(this.publisherCount/this.elemPerPage);
-        this.reqFinished = true;
       })
     },
   },

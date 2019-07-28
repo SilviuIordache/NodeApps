@@ -49,8 +49,8 @@ class PublisherController {
                                       '$PublicationYear'] } },
           maxYear: { $max: '$PublicationYear'}
         },
-      },{
-      $facet: {
+      },
+      { $facet: {
           publishers: [
               { $sort: { count: -1 } },
               { $skip: page * elemPerPage  },
@@ -61,7 +61,8 @@ class PublisherController {
               { $group: { _id: null, total: { $sum: 1 } } }
            ]
          }
-      }
+      },
+      { $out : "test-aggr"}
     ]
       
     this.model.aggregate(pipelineStage)

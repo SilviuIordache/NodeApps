@@ -1,14 +1,42 @@
 [
   {
-    "username": "Silviu",
-    "password": "12345"
+    "email": "andrei@yahoo.com",
+    "password": "12345",
+    "level": 0
   },
   {
-    "username": "Geani",
-    "password": "12345"
+    "username": "bibica@gmail.com",
+    "password": "12345",
+    "level": 0
   },
   {
-    "username": "Petre",
-    "password": "12345"
+    "username": "ionica@yahoo.com",
+    "password": "12345",
+    "level": 0
+  },
+  {
+    "username": "geani@yahoo.com",
+    "password": "12345",
+    "level": 0
+  },
+  {
+    "username": "riki@gmail.com",
+    "password": "12345",
+    "level": 0
+  },
+  {
+    "username": "bikini@yahoo.com",
+    "password": "12345",
+    "level": 0
+  },
+  {
+    "username": "mailstricatyahoo.com",
+    "password": "12345",
+    "level": 0
+  },
+  {
+    "username": "pasarica@gmail.com",
+    "password": "12345",
+    "level": 0
   }
 ]
